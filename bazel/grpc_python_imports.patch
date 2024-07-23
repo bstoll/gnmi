@@ -1,0 +1,38 @@
+diff --git a/bazel/protobuf.bzl b/bazel/protobuf.bzl
+index 9568e627a7..e9d599a797 100644
+--- a/bazel/protobuf.bzl
++++ b/bazel/protobuf.bzl
+@@ -271,15 +271,16 @@ def declare_out_files(protos, context, generated_file_format):
+ 
+     out_file_paths = []
+     for proto in protos:
++        proto_path = proto.path[:-len(".proto")].replace(".", "/") + ".proto"
+         if not is_in_virtual_imports(proto):
+             prefix = _make_prefix(proto.owner)
+             full_prefix = context.genfiles_dir.path + "/" + prefix
+-            if proto.path.startswith(full_prefix):
+-                out_file_paths.append(proto.path[len(full_prefix):])
+-            elif proto.path.startswith(prefix):
+-                out_file_paths.append(proto.path[len(prefix):])
++            if proto_path.startswith(full_prefix):
++                out_file_paths.append(proto_path[len(full_prefix):])
++            elif proto_path.startswith(prefix):
++                out_file_paths.append(proto_path[len(prefix):])
+         else:
+-            out_file_paths.append(proto.path[proto.path.index(_VIRTUAL_IMPORTS) + 1:])
++            out_file_paths.append(proto_path[proto_path.index(_VIRTUAL_IMPORTS) + 1:])
+ 
+     return [
+         context.actions.declare_file(
+diff --git a/src/compiler/python_generator.cc b/src/compiler/python_generator.cc
+index 11bc2c5cec..9b9d95bc34 100644
+--- a/src/compiler/python_generator.cc
++++ b/src/compiler/python_generator.cc
+@@ -960,6 +960,7 @@ bool PythonGrpcGenerator::Generate(const FileDescriptor* file,
+     std::string base =
+         file->name().substr(0, file->name().size() - proto_suffix_length);
+     std::replace(base.begin(), base.end(), '-', '_');
++    std::replace(base.begin(), base.end(), '.', '/');
+     pb2_file_name = base + "_pb2.py";
+     pb2_grpc_file_name = base + "_pb2_grpc.py";
+   } else {
