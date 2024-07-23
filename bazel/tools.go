@@ -1,6 +1,6 @@
 //go:build tools
 
-package gnmi
+package bazel
 
 // These imports only exist to keep go.mod entries for packages that are
 // referenced in BUILD files, but not in Go code.
