@@ -17,6 +17,7 @@
 
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(
     default_visibility = ["//visibility:public"],
@@ -39,18 +40,15 @@ cc_proto_library(
 
 go_proto_library(
     name = "target_go_proto",
-    compilers = [
-        "@io_bazel_rules_go//proto:go_grpc_v2",
-        "@io_bazel_rules_go//proto:go_proto",
-    ],
     importpath = "github.com/openconfig/gnmi/proto/target",
     proto = ":target_proto",
     deps = [
-        "//proto/gnmi:gnmi_go_proto",
+        "//proto/gnmi",
     ],
 )
 
 go_library(
     name = "target",
     embed = [":target_go_proto"],
+    importpath = "github.com/openconfig/gnmi/proto/target",
 )
