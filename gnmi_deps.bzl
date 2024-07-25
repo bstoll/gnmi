@@ -40,10 +40,6 @@ def gnmi_deps():
             url = "https://github.com/grpc/grpc/archive/refs/tags/v1.65.0.tar.gz",
             strip_prefix = "grpc-1.65.0",
             sha256 = "ebc3acfde70cfae3f4f04b8dbb72259540cb1dc427be362569fbc2607dabfe39",
-            patches = [
-                "//bazel:grpc_python_imports.patch",
-            ],
-            patch_args = ["-p1"],
         )
     if not native.existing_rule("com_google_googleapis"):
         http_archive(

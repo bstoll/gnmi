@@ -32,25 +32,11 @@ copy_go_generated() {
   done
 }
 
-copy_py_generated() {
-  pkg="$1"
-  # Default to matching all text after the last / in $1 for proto if $2 is unset
-  proto="${1##*/}" && [ "${2++}" ] && proto="$2"
-  py_prefix="${BASE}"/"${pkg}"/_virtual_imports/"${proto}"_proto/"${GNMI_NS//./\/}"/"${pkg}"
-  for file in ${py_prefix}/*.py ${py_prefix}/*.pyi; do
-    cp "${file}" "${pkg}"/ && chmod u+w,-x "${pkg}"/"$(basename "${file}")"
-  done
-}
-
 bazel build //proto/gnmi_ext:all
 copy_go_generated "proto/gnmi_ext"
-copy_py_generated "proto/gnmi_ext"
 bazel build //proto/gnmi:all
 copy_go_generated "proto/gnmi"
-copy_py_generated "proto/gnmi"
 bazel build //testing/fake/proto:all
 copy_go_generated "testing/fake/proto" "fake"
-copy_py_generated "testing/fake/proto" "fake"
 bazel build //proto/collector:all
 copy_go_generated "proto/collector"
-copy_py_generated "proto/collector"

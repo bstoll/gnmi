@@ -15,8 +15,6 @@
 # Supporting infrastructure for implementing and testing PINS.
 #
 
-load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
-load("@com_github_grpc_grpc//bazel:python_rules.bzl", "py_grpc_library", "py_proto_library")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
@@ -55,17 +53,4 @@ go_proto_library(
 go_library(
     name = "target",
     embed = [":target_go_proto"],
-)
-
-py_proto_library(
-    name = "target_py_pb2",
-    deps = [":target_proto"],
-)
-
-py_grpc_library(
-    name = "target_py_grpc",
-    srcs = [":target_proto"],
-    deps = [
-        ":target_py_pb2",
-    ],
 )
