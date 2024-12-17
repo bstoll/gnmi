@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 # Supporting infrastructure for implementing and testing PINS.
-load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_test")
 
 package(
     default_visibility = ["//visibility:public"],
@@ -26,3 +26,18 @@ exports_files(["LICENSE"])
 # gazelle:proto_import_prefix github.com/openconfig/gnmi
 # gazelle:prefix github.com/openconfig/gnmi
 gazelle(name = "gazelle")
+
+gazelle(
+    name = "gazelle_update_repos",
+    args = [
+        "-from_file=go.mod",
+        "-to_macro=gnmi_go_deps.bzl%gnmi_go_deps",
+        "-prune",
+    ],
+    command = "update-repos",
+)
+
+gazelle_test(
+    name = "gazelle_test",
+    workspace = "//:BUILD.bazel",
+)
