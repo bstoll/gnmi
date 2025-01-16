@@ -946,9 +946,7 @@ func TestGNMISubscribeTimeout(t *testing.T) {
 		WithTimeout(100 * time.Millisecond),
 		// Cause query to hang indefinitely to induce timeout.
 		WithFlowControlTest(func() {
-			select {
-			case <-stall:
-			}
+			<-stall
 		}),
 	}
 

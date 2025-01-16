@@ -308,7 +308,7 @@ func noti(prefix []string, pp *gpb.Path, ts time.Time, u *gpb.Update) (client.No
 		}
 		return client.Update{Path: p, TS: ts, Val: val, Dups: u.Duplicates}, nil
 	default:
-		return nil, fmt.Errorf("Unsupported value type: %v", v.Type)
+		return nil, fmt.Errorf("unsupported value type: %v", v.Type)
 	}
 }
 

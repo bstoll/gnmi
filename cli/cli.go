@@ -122,7 +122,7 @@ func fixStability(m prototext.MarshalOptions, r proto.Message) []byte {
 // results are formatted as a human readable string and passed to
 // Config.Display().
 func sendQueryAndDisplay(ctx context.Context, query client.Query, cfg *Config) error {
-	cancel := func() {}
+	var cancel func()
 	if cfg.StreamingDuration > 0 {
 		ctx, cancel = context.WithTimeout(ctx, cfg.StreamingDuration)
 		defer cancel()

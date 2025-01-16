@@ -73,7 +73,6 @@ var (
 	setFlag          = flag.Bool("set", false, `When set, CLI will perform a Set request. Usage: gnmi_cli -set -proto <gnmi.SetRequest> -address <address> [other flags ...]`)
 	setReqFlag       = flag.Bool("include_set_req", false, `When set, CLI will pretty print the inputted set request`)
 	withUserPass     = flag.Bool("with_user_pass", false, "When set, CLI will prompt for username/password to use when connecting to a target.")
-	withPerRPCAuth   = flag.Bool("with_per_rpc_auth", false, "Use per RPC auth.")
 
 	// Certificate files.
 	insecureFlag = flag.Bool("insecure", false, "use insecure GRPC connection.")

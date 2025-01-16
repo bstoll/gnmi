@@ -59,7 +59,7 @@ func Register(t string, f InitImpl) error {
 	mu.Lock()
 	defer mu.Unlock()
 	if _, ok := clientImpl[t]; ok {
-		return fmt.Errorf("Duplicate registration of type %q", t)
+		return fmt.Errorf("duplicate registration of type %q", t)
 	}
 	if f == nil {
 		return errors.New("RegisterFunc cannot be nil")

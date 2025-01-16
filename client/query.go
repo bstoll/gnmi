@@ -242,11 +242,11 @@ func NewQuery(sr *gpb.SubscribeRequest) (Query, error) {
 	}
 
 	if s.Subscribe == nil {
-		return q, errors.New("Subscribe field in SubscribeRequest_Subscribe is nil")
+		return q, errors.New("subscribe field in SubscribeRequest_Subscribe is nil")
 	}
 
 	if s.Subscribe.Prefix == nil {
-		return q, errors.New("Prefix field in SubscriptionList is nil")
+		return q, errors.New("prefix field in SubscriptionList is nil")
 	}
 	q.Target = s.Subscribe.Prefix.Target
 	q.UpdatesOnly = s.Subscribe.UpdatesOnly
@@ -275,9 +275,9 @@ func (q Query) Validate() error {
 	}
 	switch {
 	case q.Type == Unknown:
-		return errors.New("Query type cannot be Unknown")
+		return errors.New("query type cannot be Unknown")
 	case len(q.Queries) == 0 && q.SubReq == nil:
-		return errors.New("Neither Query.Queries or Query.SubReq is set")
+		return errors.New("neither Query.Queries or Query.SubReq is set")
 	case q.NotificationHandler != nil && q.ProtoHandler != nil:
 		return errors.New("only one of Notification or ProtoHandler must be set")
 	case q.NotificationHandler == nil && q.ProtoHandler == nil:

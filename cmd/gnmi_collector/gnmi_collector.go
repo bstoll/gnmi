@@ -130,19 +130,19 @@ func runCollector(ctx context.Context) error {
 	// Initialize configuration.
 	buf, err := ioutil.ReadFile(*configFile)
 	if err != nil {
-		return fmt.Errorf("Could not read configuration from %q: %v", *configFile, err)
+		return fmt.Errorf("could not read configuration from %q: %v", *configFile, err)
 	}
 	if err := prototext.Unmarshal(buf, c.config); err != nil {
-		return fmt.Errorf("Could not parse configuration from %q: %v", *configFile, err)
+		return fmt.Errorf("could not parse configuration from %q: %v", *configFile, err)
 	}
 	if err := target.Validate(c.config); err != nil {
-		return fmt.Errorf("Configuration in %q is invalid: %v", *configFile, err)
+		return fmt.Errorf("configuration in %q is invalid: %v", *configFile, err)
 	}
 
 	// Initialize TLS credentials.
 	creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
 	if err != nil {
-		return fmt.Errorf("Failed to generate credentials %v", err)
+		return fmt.Errorf("failed to generate credentials %v", err)
 	}
 
 	// Initialize cache.
@@ -232,12 +232,6 @@ func runCollector(ctx context.Context) error {
 	return ctx.Err()
 }
 
-// Struct for managing the dynamic creation of tunnel targets.
-type tunnTarget struct {
-	conf *tpb.Target
-	conn *tunnel.Conn
-}
-
 type collector struct {
 	cache   *cache.Cache
 	config  *tpb.Configuration
@@ -264,7 +258,7 @@ func (c *collector) add(ctx context.Context, id string, t *tpb.Target, tt *tunne
 	}
 
 	if err := c.tm.Add(id, t, request); err != nil {
-		return fmt.Errorf("Could not add target %q: %v", id, err)
+		return fmt.Errorf("could not add target %q: %v", id, err)
 	}
 	return nil
 }

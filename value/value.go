@@ -25,56 +25,55 @@ import (
 	"unicode/utf8"
 
 	gpb "github.com/openconfig/gnmi/proto/gnmi"
-	pb "github.com/openconfig/gnmi/proto/gnmi"
 )
 
 // FromScalar will convert common scalar types to their TypedValue equivalent.
 // It will return an error if the type cannot be mapped to a scalar value.
-func FromScalar(i interface{}) (*pb.TypedValue, error) {
-	tv := &pb.TypedValue{}
+func FromScalar(i interface{}) (*gpb.TypedValue, error) {
+	tv := &gpb.TypedValue{}
 	switch v := i.(type) {
 	case string:
 		if utf8.ValidString(v) {
-			tv.Value = &pb.TypedValue_StringVal{StringVal: v}
+			tv.Value = &gpb.TypedValue_StringVal{StringVal: v}
 		} else {
 			return nil, fmt.Errorf("string %q contains non-UTF-8 bytes", v)
 		}
 	case int:
-		tv.Value = &pb.TypedValue_IntVal{IntVal: int64(v)}
+		tv.Value = &gpb.TypedValue_IntVal{IntVal: int64(v)}
 	case int8:
-		tv.Value = &pb.TypedValue_IntVal{IntVal: int64(v)}
+		tv.Value = &gpb.TypedValue_IntVal{IntVal: int64(v)}
 	case int16:
-		tv.Value = &pb.TypedValue_IntVal{IntVal: int64(v)}
+		tv.Value = &gpb.TypedValue_IntVal{IntVal: int64(v)}
 	case int32:
-		tv.Value = &pb.TypedValue_IntVal{IntVal: int64(v)}
+		tv.Value = &gpb.TypedValue_IntVal{IntVal: int64(v)}
 	case int64:
-		tv.Value = &pb.TypedValue_IntVal{IntVal: v}
+		tv.Value = &gpb.TypedValue_IntVal{IntVal: v}
 	case uint:
-		tv.Value = &pb.TypedValue_UintVal{UintVal: uint64(v)}
+		tv.Value = &gpb.TypedValue_UintVal{UintVal: uint64(v)}
 	case uint8:
-		tv.Value = &pb.TypedValue_UintVal{UintVal: uint64(v)}
+		tv.Value = &gpb.TypedValue_UintVal{UintVal: uint64(v)}
 	case uint16:
-		tv.Value = &pb.TypedValue_UintVal{UintVal: uint64(v)}
+		tv.Value = &gpb.TypedValue_UintVal{UintVal: uint64(v)}
 	case uint32:
-		tv.Value = &pb.TypedValue_UintVal{UintVal: uint64(v)}
+		tv.Value = &gpb.TypedValue_UintVal{UintVal: uint64(v)}
 	case uint64:
-		tv.Value = &pb.TypedValue_UintVal{UintVal: v}
+		tv.Value = &gpb.TypedValue_UintVal{UintVal: v}
 	case float32:
-		tv.Value = &pb.TypedValue_DoubleVal{DoubleVal: float64(v)}
+		tv.Value = &gpb.TypedValue_DoubleVal{DoubleVal: float64(v)}
 	case float64:
-		tv.Value = &pb.TypedValue_DoubleVal{DoubleVal: v}
+		tv.Value = &gpb.TypedValue_DoubleVal{DoubleVal: v}
 	case bool:
-		tv.Value = &pb.TypedValue_BoolVal{BoolVal: v}
+		tv.Value = &gpb.TypedValue_BoolVal{BoolVal: v}
 	case []string:
-		sa := &pb.ScalarArray{Element: make([]*pb.TypedValue, len(v))}
+		sa := &gpb.ScalarArray{Element: make([]*gpb.TypedValue, len(v))}
 		for x, s := range v {
-			sa.Element[x] = &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: s}}
+			sa.Element[x] = &gpb.TypedValue{Value: &gpb.TypedValue_StringVal{StringVal: s}}
 		}
-		tv.Value = &pb.TypedValue_LeaflistVal{LeaflistVal: sa}
+		tv.Value = &gpb.TypedValue_LeaflistVal{LeaflistVal: sa}
 	case []byte:
-		tv.Value = &pb.TypedValue_BytesVal{BytesVal: v}
+		tv.Value = &gpb.TypedValue_BytesVal{BytesVal: v}
 	case []interface{}:
-		sa := &pb.ScalarArray{Element: make([]*pb.TypedValue, len(v))}
+		sa := &gpb.ScalarArray{Element: make([]*gpb.TypedValue, len(v))}
 		var err error
 		for x, intf := range v {
 			sa.Element[x], err = FromScalar(intf)
@@ -82,7 +81,7 @@ func FromScalar(i interface{}) (*pb.TypedValue, error) {
 				return nil, fmt.Errorf("in []interface{}: %v", err)
 			}
 		}
-		tv.Value = &pb.TypedValue_LeaflistVal{LeaflistVal: sa}
+		tv.Value = &gpb.TypedValue_LeaflistVal{LeaflistVal: sa}
 	default:
 		return nil, fmt.Errorf("non-scalar type %+v", i)
 	}
@@ -98,24 +97,24 @@ type DeprecatedScalar struct {
 
 // ToScalar will convert TypedValue scalar types to a Go native type. It will
 // return an error if the TypedValue does not contain a scalar type.
-func ToScalar(tv *pb.TypedValue) (interface{}, error) {
+func ToScalar(tv *gpb.TypedValue) (interface{}, error) {
 	var i interface{}
 	switch tv.GetValue().(type) {
-	case *pb.TypedValue_DecimalVal:
+	case *gpb.TypedValue_DecimalVal:
 		i = decimalToFloat(tv.GetDecimalVal())
-	case *pb.TypedValue_StringVal:
+	case *gpb.TypedValue_StringVal:
 		i = tv.GetStringVal()
-	case *pb.TypedValue_IntVal:
+	case *gpb.TypedValue_IntVal:
 		i = tv.GetIntVal()
-	case *pb.TypedValue_UintVal:
+	case *gpb.TypedValue_UintVal:
 		i = tv.GetUintVal()
-	case *pb.TypedValue_BoolVal:
+	case *gpb.TypedValue_BoolVal:
 		i = tv.GetBoolVal()
-	case *pb.TypedValue_FloatVal:
+	case *gpb.TypedValue_FloatVal:
 		i = tv.GetFloatVal()
-	case *pb.TypedValue_DoubleVal:
+	case *gpb.TypedValue_DoubleVal:
 		i = tv.GetDoubleVal()
-	case *pb.TypedValue_LeaflistVal:
+	case *gpb.TypedValue_LeaflistVal:
 		elems := tv.GetLeaflistVal().GetElement()
 		ss := make([]interface{}, len(elems))
 		for x, e := range elems {
@@ -126,7 +125,7 @@ func ToScalar(tv *pb.TypedValue) (interface{}, error) {
 			ss[x] = v
 		}
 		i = ss
-	case *pb.TypedValue_BytesVal:
+	case *gpb.TypedValue_BytesVal:
 		i = tv.GetBytesVal()
 	case *gpb.TypedValue_JsonVal:
 		v := tv.GetJsonVal()
@@ -156,65 +155,65 @@ func ToScalar(tv *pb.TypedValue) (interface{}, error) {
 
 // decimalToFloat converts a *gnmi_proto.Decimal64 to a float32. Downcasting to
 // float32 is performed as the precision of a float64 is not required.
-func decimalToFloat(d *pb.Decimal64) float32 {
+func decimalToFloat(d *gpb.Decimal64) float32 {
 	return float32(float64(d.Digits) / math.Pow(10, float64(d.Precision)))
 }
 
 // Equal returns true if the values in a and b are the same.  This method
 // handles only the primitive types and ScalarArrays and returns false for all
 // other types.
-func Equal(a, b *pb.TypedValue) bool {
+func Equal(a, b *gpb.TypedValue) bool {
 	switch av := a.GetValue().(type) {
-	case *pb.TypedValue_StringVal:
-		bv, ok := b.GetValue().(*pb.TypedValue_StringVal)
+	case *gpb.TypedValue_StringVal:
+		bv, ok := b.GetValue().(*gpb.TypedValue_StringVal)
 		if !ok {
 			return false
 		}
 		return av.StringVal == bv.StringVal
-	case *pb.TypedValue_IntVal:
-		bv, ok := b.GetValue().(*pb.TypedValue_IntVal)
+	case *gpb.TypedValue_IntVal:
+		bv, ok := b.GetValue().(*gpb.TypedValue_IntVal)
 		if !ok {
 			return false
 		}
 		return av.IntVal == bv.IntVal
-	case *pb.TypedValue_UintVal:
-		bv, ok := b.GetValue().(*pb.TypedValue_UintVal)
+	case *gpb.TypedValue_UintVal:
+		bv, ok := b.GetValue().(*gpb.TypedValue_UintVal)
 		if !ok {
 			return false
 		}
 		return av.UintVal == bv.UintVal
-	case *pb.TypedValue_BoolVal:
-		bv, ok := b.GetValue().(*pb.TypedValue_BoolVal)
+	case *gpb.TypedValue_BoolVal:
+		bv, ok := b.GetValue().(*gpb.TypedValue_BoolVal)
 		if !ok {
 			return false
 		}
 		return av.BoolVal == bv.BoolVal
-	case *pb.TypedValue_BytesVal:
-		bv, ok := b.GetValue().(*pb.TypedValue_BytesVal)
+	case *gpb.TypedValue_BytesVal:
+		bv, ok := b.GetValue().(*gpb.TypedValue_BytesVal)
 		if !ok {
 			return false
 		}
 		return string(av.BytesVal) == string(bv.BytesVal)
-	case *pb.TypedValue_DoubleVal:
-		bv, ok := b.Value.(*pb.TypedValue_DoubleVal)
+	case *gpb.TypedValue_DoubleVal:
+		bv, ok := b.Value.(*gpb.TypedValue_DoubleVal)
 		if !ok {
 			return false
 		}
 		return av.DoubleVal == bv.DoubleVal
-	case *pb.TypedValue_FloatVal:
-		bv, ok := b.GetValue().(*pb.TypedValue_FloatVal)
+	case *gpb.TypedValue_FloatVal:
+		bv, ok := b.GetValue().(*gpb.TypedValue_FloatVal)
 		if !ok {
 			return false
 		}
 		return av.FloatVal == bv.FloatVal
-	case *pb.TypedValue_DecimalVal:
-		bv, ok := b.GetValue().(*pb.TypedValue_DecimalVal)
+	case *gpb.TypedValue_DecimalVal:
+		bv, ok := b.GetValue().(*gpb.TypedValue_DecimalVal)
 		if !ok {
 			return false
 		}
 		return av.DecimalVal.Digits == bv.DecimalVal.Digits && av.DecimalVal.Precision == bv.DecimalVal.Precision
-	case *pb.TypedValue_LeaflistVal:
-		bv, ok := b.GetValue().(*pb.TypedValue_LeaflistVal)
+	case *gpb.TypedValue_LeaflistVal:
+		bv, ok := b.GetValue().(*gpb.TypedValue_LeaflistVal)
 		if !ok {
 			return false
 		}

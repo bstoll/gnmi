@@ -500,10 +500,8 @@ func TestRetrySubscribe(t *testing.T) {
 	fc.stageSendErr() // Initial failure causing retry.
 	subscribeClient = func(ctx context.Context, conn *grpc.ClientConn) (gpb.GNMI_SubscribeClient, error) {
 		go func() {
-			select {
-			case <-ctx.Done():
-				fc.sendRecvErr() // Simulate stream closure.
-			}
+			<-ctx.Done()
+			fc.sendRecvErr() // Simulate stream closure.
 		}()
 		return fc, nil
 	}
@@ -613,10 +611,8 @@ func TestReceiveTimeout(t *testing.T) {
 	fc := newFakeSubscribeClient()
 	subscribeClient = func(ctx context.Context, conn *grpc.ClientConn) (gpb.GNMI_SubscribeClient, error) {
 		go func() {
-			select {
-			case <-ctx.Done():
-				fc.sendRecvErr() // Simulate stream closure.
-			}
+			<-ctx.Done()
+			fc.sendRecvErr() // Simulate stream closure.
 		}()
 		return fc, nil
 	}
@@ -775,10 +771,8 @@ func TestRemoveDuringBackoff(t *testing.T) {
 	fc := newFakeSubscribeClient()
 	subscribeClient = func(ctx context.Context, conn *grpc.ClientConn) (gpb.GNMI_SubscribeClient, error) {
 		go func() {
-			select {
-			case <-ctx.Done():
-				fc.sendRecvErr() // Simulate stream closure.
-			}
+			<-ctx.Done()
+			fc.sendRecvErr() // Simulate stream closure.
 		}()
 		return fc, nil
 	}

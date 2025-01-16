@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -587,7 +588,7 @@ func TestParallelQueryGet(t *testing.T) {
 func makePath(i int64) []string {
 	path := []string{}
 	for depth := 0; depth < 5; depth++ {
-		path = append(path, fmt.Sprintf("%d", i&15))
+		path = append(path, strconv.FormatInt(i&15, 10))
 		i >>= 4
 	}
 	return path
@@ -886,7 +887,7 @@ func TestString(t *testing.T) {
 			t.Errorf("String\n\tgot:  %q\n\twant: %q", got, test.want)
 		}
 		// Test via string format specifier.
-		got = fmt.Sprintf("%s", test.node)
+		got = test.node.String()
 		if got != test.want {
 			t.Errorf("string format specifier\n\tgot:  %q\n\twant: %q", got, test.want)
 		}

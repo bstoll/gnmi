@@ -82,7 +82,6 @@ func (r *receiveEvent) Direction() direction { return r.d }
 
 type fakeStream struct {
 	grpc.ServerStream
-	curr   int
 	events []event
 	recv   []*gnmipb.SubscribeResponse
 	ctx    context.Context

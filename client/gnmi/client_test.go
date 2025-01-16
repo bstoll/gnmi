@@ -322,6 +322,9 @@ func TestGNMIMessageUpdates(t *testing.T) {
 	c := client.New()
 	defer c.Close()
 	err = c.Subscribe(context.Background(), q)
+	if err != nil {
+		t.Errorf("got error %v, want nil", err)
+	}
 	if diff := pretty.Compare(wantNoti, gotNoti); diff != "" {
 		t.Errorf("unexpected updates:\n%s", diff)
 	}
@@ -410,6 +413,9 @@ func TestGNMIWithSubscribeRequest(t *testing.T) {
 	c := client.New()
 	defer c.Close()
 	err = c.Subscribe(context.Background(), q)
+	if err != nil {
+		t.Errorf("got error %v, want nil", err)
+	}
 	if diff := pretty.Compare(wantNoti, gotNoti); diff != "" {
 		t.Errorf("unexpected updates:\n%s\nwantnoti:%v\ngotnoti:%v\n", diff, wantNoti, gotNoti)
 	}
