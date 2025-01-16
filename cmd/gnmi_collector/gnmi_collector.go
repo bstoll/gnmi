@@ -23,9 +23,9 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"math"
 	"net"
+	"os"
 	"time"
 
 	log "github.com/golang/glog"
@@ -128,7 +128,7 @@ func runCollector(ctx context.Context) error {
 	c := collector{config: &tpb.Configuration{}}
 
 	// Initialize configuration.
-	buf, err := ioutil.ReadFile(*configFile)
+	buf, err := os.ReadFile(*configFile)
 	if err != nil {
 		return fmt.Errorf("could not read configuration from %q: %v", *configFile, err)
 	}

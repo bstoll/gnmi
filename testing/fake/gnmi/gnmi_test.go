@@ -33,6 +33,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/testing/protocmp"
 
 	gnmipb "github.com/openconfig/gnmi/proto/gnmi"
@@ -257,7 +258,7 @@ func TestClientCreate(t *testing.T) {
 			s := newFakeStream(tt.events)
 			gotErr := c.Run(s)
 			if gotErr != nil {
-				if got, want := grpc.Code(gotErr), tt.err; got != want {
+				if got, want := status.Code(gotErr), tt.err; got != want {
 					t.Errorf("Test:\n%s\nRun() unexpected error %s: got %s, want %s", pp.Sprint(tt), gotErr.Error(), got, want)
 				}
 				return

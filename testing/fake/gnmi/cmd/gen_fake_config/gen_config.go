@@ -20,7 +20,6 @@ limitations under the License.
 package main
 
 import (
-	"io/ioutil"
 	"os"
 
 	log "github.com/golang/glog"
@@ -66,7 +65,7 @@ func main() {
 	if err != nil {
 		log.Exitf("failed to format %s: %v", config, err)
 	}
-	if err := ioutil.WriteFile(outputPath, b, os.ModePerm); err != nil {
+	if err := os.WriteFile(outputPath, b, os.ModePerm); err != nil {
 		log.Exit(err)
 	}
 }

@@ -23,8 +23,8 @@ import (
 
 	log "github.com/golang/glog"
 	"github.com/openconfig/gnmi/testing/fake/queue"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 
@@ -80,10 +80,10 @@ func (c *Client) addRequest(req *gpb.SubscribeRequest) {
 // previous queue has been drained of notifications.
 func (c *Client) Run(stream gpb.GNMI_SubscribeServer) (err error) {
 	if c.config == nil {
-		return grpc.Errorf(codes.FailedPrecondition, "cannot start client: config is nil")
+		return status.Errorf(codes.FailedPrecondition, "cannot start client: config is nil")
 	}
 	if stream == nil {
-		return grpc.Errorf(codes.FailedPrecondition, "cannot start client: stream is nil")
+		return status.Errorf(codes.FailedPrecondition, "cannot start client: stream is nil")
 	}
 
 	defer func() {
@@ -95,20 +95,20 @@ func (c *Client) Run(stream gpb.GNMI_SubscribeServer) (err error) {
 	query, err := stream.Recv()
 	if err != nil {
 		if err == io.EOF {
-			return grpc.Errorf(codes.Aborted, "stream EOF received before init")
+			return status.Errorf(codes.Aborted, "stream EOF received before init")
 		}
-		return grpc.Errorf(grpc.Code(err), "received error from client")
+		return status.Errorf(status.Code(err), "received error from client")
 	}
 	c.addRequest(query)
 	log.V(1).Infof("Client %s received initial query: %v", c, query)
 
 	c.subscribe = query.GetSubscribe()
 	if c.subscribe == nil {
-		return grpc.Errorf(codes.InvalidArgument, "first message must be SubscriptionList: %q", query)
+		return status.Errorf(codes.InvalidArgument, "first message must be SubscriptionList: %q", query)
 	}
 	// Initialize the queue used between send and recv.
 	if err = c.reset(); err != nil {
-		return grpc.Errorf(codes.Aborted, "failed to initialize the queue: %v", err)
+		return status.Errorf(codes.Aborted, "failed to initialize the queue: %v", err)
 	}
 
 	log.V(1).Infof("Client %s running", c)

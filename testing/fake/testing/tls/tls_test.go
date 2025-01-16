@@ -19,7 +19,6 @@ package tls
 import (
 	"crypto/tls"
 	"io"
-	"io/ioutil"
 	"testing"
 )
 
@@ -43,7 +42,7 @@ func TestGenCert(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		io.Copy(ioutil.Discard, con)
+		io.Copy(io.Discard, con)
 	}()
 
 	con, err := tls.Dial("tcp", l.Addr().String(), &tls.Config{

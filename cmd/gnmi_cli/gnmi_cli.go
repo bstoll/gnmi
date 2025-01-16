@@ -30,7 +30,6 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/signal"
 	"strings"
@@ -45,7 +44,7 @@ import (
 	"github.com/openconfig/gnmi/client"
 	"github.com/openconfig/gnmi/client/flags"
 	gclient "github.com/openconfig/gnmi/client/gnmi"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 	"google.golang.org/protobuf/encoding/prototext"
 
 	gpb "github.com/openconfig/gnmi/proto/gnmi"
@@ -151,7 +150,7 @@ func main() {
 
 	if *caCert != "" {
 		certPool := x509.NewCertPool()
-		ca, err := ioutil.ReadFile(*caCert)
+		ca, err := os.ReadFile(*caCert)
 		if err != nil {
 			log.Exitf("could not read %q: %s", *caCert, err)
 		}
@@ -337,7 +336,7 @@ func readCredentials() (*client.Credentials, error) {
 	}
 
 	fmt.Print("password: ")
-	pb, err := terminal.ReadPassword(int(os.Stdin.Fd()))
+	pb, err := term.ReadPassword(int(os.Stdin.Fd()))
 	fmt.Print("\n") // Echo 'Enter' key.
 	if err != nil {
 		return nil, err

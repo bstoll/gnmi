@@ -11,8 +11,8 @@ require (
 	github.com/openconfig/grpctunnel v0.1.0
 	github.com/openconfig/ygot v0.29.20
 	github.com/protocolbuffers/txtpbfmt v0.0.0-20240823084532-8e6b51fa9bef
-	golang.org/x/crypto v0.32.0
 	golang.org/x/net v0.34.0
+	golang.org/x/term v0.28.0
 	google.golang.org/grpc v1.69.2
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1
 	google.golang.org/protobuf v1.36.2
@@ -23,7 +23,6 @@ require (
 	github.com/openconfig/goyang v1.6.0 // indirect
 	golang.org/x/exp v0.0.0-20230801115018-d63ba01acd4b // indirect
 	golang.org/x/sys v0.29.0 // indirect
-	golang.org/x/term v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250106144421-5f5ef82da422 // indirect
 )
