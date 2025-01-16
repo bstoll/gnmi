@@ -267,7 +267,7 @@ func TestGNMIMessageUpdates(t *testing.T) {
 				Update: []*gpb.Update{
 					{
 						Path: &gpb.Path{Element: []string{"a"}},
-						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{5}},
+						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{IntVal: 5}},
 					},
 				},
 			},
@@ -279,7 +279,7 @@ func TestGNMIMessageUpdates(t *testing.T) {
 				Update: []*gpb.Update{
 					{
 						Path: &gpb.Path{Element: []string{"b"}},
-						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{5}},
+						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{IntVal: 5}},
 					},
 				},
 			},
@@ -291,7 +291,7 @@ func TestGNMIMessageUpdates(t *testing.T) {
 				Update: []*gpb.Update{
 					{
 						Path: &gpb.Path{Element: []string{"b"}},
-						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{5}},
+						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{IntVal: 5}},
 					},
 				},
 			},
@@ -355,7 +355,7 @@ func TestGNMIWithSubscribeRequest(t *testing.T) {
 				Update: []*gpb.Update{
 					{
 						Path: &gpb.Path{Element: []string{"a"}},
-						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{5}},
+						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{IntVal: 5}},
 					},
 				},
 			},
@@ -367,7 +367,7 @@ func TestGNMIWithSubscribeRequest(t *testing.T) {
 				Update: []*gpb.Update{
 					{
 						Path: &gpb.Path{Element: []string{"b"}},
-						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{5}},
+						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{IntVal: 5}},
 					},
 				},
 			},
@@ -379,7 +379,7 @@ func TestGNMIWithSubscribeRequest(t *testing.T) {
 				Update: []*gpb.Update{
 					{
 						Path: &gpb.Path{Element: []string{"b"}},
-						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{5}},
+						Val:  &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{IntVal: 5}},
 					},
 				},
 			},
@@ -442,13 +442,13 @@ func TestNoti(t *testing.T) {
 			desc:     "update with TypedValue",
 			path:     stringToPath("dev/a"),
 			ts:       time.Unix(0, 100),
-			u:        &gpb.Update{Val: &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{5}}},
+			u:        &gpb.Update{Val: &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{IntVal: 5}}},
 			wantNoti: client.Update{Path: []string{"dev", "a"}, TS: time.Unix(0, 100), Val: 5},
 		}, {
 			desc: "update with non-scalar TypedValue",
 			path: stringToPath("dev/a"),
 			ts:   time.Unix(0, 100),
-			u:    &gpb.Update{Val: &gpb.TypedValue{Value: &gpb.TypedValue_JsonVal{[]byte("5")}}},
+			u:    &gpb.Update{Val: &gpb.TypedValue{Value: &gpb.TypedValue_JsonVal{JsonVal: []byte("5")}}},
 			wantNoti: client.Update{Path: []string{"dev", "a"}, TS: time.Unix(0, 100), Val: value.DeprecatedScalar{
 				Message: "Deprecated TypedValue_JsonVal",
 				Value:   5,
@@ -482,7 +482,7 @@ func TestNoti(t *testing.T) {
 			prefix:   []string{"dev"},
 			path:     stringToPath("a"),
 			ts:       time.Unix(0, 100),
-			u:        &gpb.Update{Val: &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{5}}},
+			u:        &gpb.Update{Val: &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{IntVal: 5}}},
 			wantNoti: client.Update{Path: []string{"dev", "a"}, TS: time.Unix(0, 100), Val: 5},
 		},
 	}

@@ -42,7 +42,7 @@ import (
 var (
 	validSubscribeRequest = &gpb.SubscribeRequest{
 		Request: &gpb.SubscribeRequest_Subscribe{
-			&gpb.SubscriptionList{
+			Subscribe: &gpb.SubscriptionList{
 				Subscription: []*gpb.Subscription{
 					{
 						Path: &gpb.Path{
@@ -854,7 +854,7 @@ func TestCustomizeRequest(t *testing.T) {
 			desc: "no existing prefix",
 			sr: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Subscription: []*gpb.Subscription{
 							{
 								Path: &gpb.Path{
@@ -867,7 +867,7 @@ func TestCustomizeRequest(t *testing.T) {
 			},
 			want: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Target: dev},
 						Subscription: []*gpb.Subscription{
 							{
@@ -884,7 +884,7 @@ func TestCustomizeRequest(t *testing.T) {
 			desc: "existing prefix",
 			sr: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Origin: "openconfig"},
 						Subscription: []*gpb.Subscription{
 							{
@@ -898,7 +898,7 @@ func TestCustomizeRequest(t *testing.T) {
 			},
 			want: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Origin: "openconfig", Target: dev},
 						Subscription: []*gpb.Subscription{
 							{
@@ -915,7 +915,7 @@ func TestCustomizeRequest(t *testing.T) {
 			desc: "existing prefix with target",
 			sr: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Origin: "openconfig", Target: "unknown target"},
 						Subscription: []*gpb.Subscription{
 							{
@@ -929,7 +929,7 @@ func TestCustomizeRequest(t *testing.T) {
 			},
 			want: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Origin: "openconfig", Target: dev},
 						Subscription: []*gpb.Subscription{
 							{

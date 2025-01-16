@@ -166,7 +166,7 @@ func TestLoad(t *testing.T) {
 				Request: map[string]*gpb.SubscribeRequest{
 					"sub1": {
 						Request: &gpb.SubscribeRequest_Subscribe{
-							&gpb.SubscriptionList{
+							Subscribe: &gpb.SubscriptionList{
 								Subscription: []*gpb.Subscription{
 									{
 										Path: &gpb.Path{
@@ -202,7 +202,7 @@ func TestLoad(t *testing.T) {
 				Request: map[string]*gpb.SubscribeRequest{
 					"sub1": {
 						Request: &gpb.SubscribeRequest_Subscribe{
-							&gpb.SubscriptionList{
+							Subscribe: &gpb.SubscriptionList{
 								Subscription: []*gpb.Subscription{
 									{
 										Path: &gpb.Path{
@@ -235,7 +235,7 @@ func TestLoad(t *testing.T) {
 				Request: map[string]*gpb.SubscribeRequest{
 					"sub1": {
 						Request: &gpb.SubscribeRequest_Subscribe{
-							&gpb.SubscriptionList{
+							Subscribe: &gpb.SubscriptionList{
 								Subscription: []*gpb.Subscription{
 									{
 										Path: &gpb.Path{

@@ -20,11 +20,12 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
-	"golang.org/x/net/context"
 	"io"
 	"strings"
 	"sync"
 	"testing"
+
+	"golang.org/x/net/context"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/kylelemons/godebug/pretty"
@@ -166,15 +167,14 @@ func TestClientCreate(t *testing.T) {
 		Port:   -1,
 		Values: []*fpb.Value{{
 			Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value: 0,
-				Distribution: &fpb.IntValue_Range{
-					&fpb.IntRange{
-						Minimum:  0,
-						Maximum:  10000000,
-						DeltaMax: 100,
-						DeltaMin: 0,
-					}}}},
+				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
+					Minimum:  0,
+					Maximum:  10000000,
+					DeltaMax: 100,
+					DeltaMin: 0,
+				}}}},
 		}},
 	}
 	tests := []struct {
@@ -226,15 +226,14 @@ func TestClientCreate(t *testing.T) {
 			Port:   -1,
 			Values: []*fpb.Value{{
 				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-				Value: &fpb.Value_IntValue{&fpb.IntValue{
+				Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 					Value: 0,
-					Distribution: &fpb.IntValue_Range{
-						&fpb.IntRange{
-							Minimum:  0,
-							Maximum:  10000000,
-							DeltaMax: 100,
-							DeltaMin: 0,
-						}}}},
+					Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
+						Minimum:  0,
+						Maximum:  10000000,
+						DeltaMax: 100,
+						DeltaMin: 0,
+					}}}},
 				Repeat: 2,
 			}},
 		},
@@ -282,15 +281,14 @@ func TestClientSend(t *testing.T) {
 			Port:   -1,
 			Values: []*fpb.Value{{
 				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-				Value: &fpb.Value_IntValue{&fpb.IntValue{
+				Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 					Value: 0,
-					Distribution: &fpb.IntValue_Range{
-						&fpb.IntRange{
-							Minimum:  0,
-							Maximum:  10000000,
-							DeltaMax: 100,
-							DeltaMin: 0,
-						}}}},
+					Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
+						Minimum:  0,
+						Maximum:  10000000,
+						DeltaMax: 100,
+						DeltaMin: 0,
+					}}}},
 				Repeat: 2,
 			}},
 		},
@@ -369,15 +367,14 @@ func TestNewAgent(t *testing.T) {
 			Port:   -1,
 			Values: []*fpb.Value{{
 				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-				Value: &fpb.Value_IntValue{&fpb.IntValue{
+				Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 					Value: 0,
-					Distribution: &fpb.IntValue_Range{
-						&fpb.IntRange{
-							Minimum:  0,
-							Maximum:  10000000,
-							DeltaMax: 100,
-							DeltaMin: 0,
-						}}}},
+					Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
+						Minimum:  0,
+						Maximum:  10000000,
+						DeltaMax: 100,
+						DeltaMin: 0,
+					}}}},
 			}},
 		},
 		err: nil,
@@ -388,17 +385,17 @@ func TestNewAgent(t *testing.T) {
 			DisableSync: true,
 			Values: []*fpb.Value{{
 				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-				Value: &fpb.Value_IntValue{&fpb.IntValue{
+				Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 					Value: 0,
 					Distribution: &fpb.IntValue_Range{
-						&fpb.IntRange{
+						Range: &fpb.IntRange{
 							Minimum:  0,
 							Maximum:  10000000,
 							DeltaMax: 100,
 							DeltaMin: 0,
 						}}}},
 			}, {
-				Value: &fpb.Value_Sync{uint64(1)},
+				Value: &fpb.Value_Sync{Sync: uint64(1)},
 			}},
 		},
 		err: nil,

@@ -34,56 +34,56 @@ type scalarTest struct {
 
 func TestFromScalar(t *testing.T) {
 	tests := []scalarTest{
-		{intf: "foo", msg: &pb.TypedValue{Value: &pb.TypedValue_StringVal{"foo"}}},
-		{intf: "a longer multiword string", msg: &pb.TypedValue{Value: &pb.TypedValue_StringVal{"a longer multiword string"}}},
-		{intf: 500, msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{500}}},
-		{intf: int8(50), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{50}}},
-		{intf: int16(500), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{500}}},
-		{intf: int32(500), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{500}}},
-		{intf: int64(500), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{500}}},
-		{intf: uint(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{500}}},
-		{intf: uint8(50), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{50}}},
-		{intf: uint16(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{500}}},
-		{intf: uint32(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{500}}},
-		{intf: uint64(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{500}}},
-		{intf: float32(3.5), msg: &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{3.5}}},
-		{intf: true, msg: &pb.TypedValue{Value: &pb.TypedValue_BoolVal{true}}},
-		{intf: false, msg: &pb.TypedValue{Value: &pb.TypedValue_BoolVal{false}}},
-		{intf: float64(3.5), msg: &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{3.5}}},
-		{intf: []byte("foo"), msg: &pb.TypedValue{Value: &pb.TypedValue_BytesVal{[]byte("foo")}}},
+		{intf: "foo", msg: &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "foo"}}},
+		{intf: "a longer multiword string", msg: &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "a longer multiword string"}}},
+		{intf: 500, msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 500}}},
+		{intf: int8(50), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 50}}},
+		{intf: int16(500), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 500}}},
+		{intf: int32(500), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 500}}},
+		{intf: int64(500), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 500}}},
+		{intf: uint(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 500}}},
+		{intf: uint8(50), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 50}}},
+		{intf: uint16(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 500}}},
+		{intf: uint32(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 500}}},
+		{intf: uint64(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 500}}},
+		{intf: float32(3.5), msg: &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{DoubleVal: 3.5}}},
+		{intf: true, msg: &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: true}}},
+		{intf: false, msg: &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: false}}},
+		{intf: float64(3.5), msg: &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{DoubleVal: 3.5}}},
+		{intf: []byte("foo"), msg: &pb.TypedValue{Value: &pb.TypedValue_BytesVal{BytesVal: []byte("foo")}}},
 		{intf: "a non-utf-8 string \377", err: true},
 		{
 			intf: []string{"a", "b"},
-			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{
+			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{
 				Element: []*pb.TypedValue{
-					{Value: &pb.TypedValue_StringVal{"a"}},
-					{Value: &pb.TypedValue_StringVal{"b"}},
+					{Value: &pb.TypedValue_StringVal{StringVal: "a"}},
+					{Value: &pb.TypedValue_StringVal{StringVal: "b"}},
 				},
 			}}},
 		},
 		{
 			intf: []string{},
-			msg:  &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{}}},
+			msg:  &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{}}},
 		},
 		{
 			intf: []interface{}{"a", "b"},
-			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{
+			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{
 				Element: []*pb.TypedValue{
-					{Value: &pb.TypedValue_StringVal{"a"}},
-					{Value: &pb.TypedValue_StringVal{"b"}},
+					{Value: &pb.TypedValue_StringVal{StringVal: "a"}},
+					{Value: &pb.TypedValue_StringVal{StringVal: "b"}},
 				},
 			}}},
 		},
 		{
 			intf: []interface{}{},
-			msg:  &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{}}},
+			msg:  &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{}}},
 		},
 		{
 			intf: []interface{}{"a", 1},
-			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{
+			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{
 				Element: []*pb.TypedValue{
-					{Value: &pb.TypedValue_StringVal{"a"}},
-					{Value: &pb.TypedValue_IntVal{1}},
+					{Value: &pb.TypedValue_StringVal{StringVal: "a"}},
+					{Value: &pb.TypedValue_IntVal{IntVal: 1}},
 				},
 			}}},
 		},
@@ -105,25 +105,25 @@ func TestFromScalar(t *testing.T) {
 
 func TestToScalar(t *testing.T) {
 	tests := []scalarTest{
-		{intf: "foo", msg: &pb.TypedValue{Value: &pb.TypedValue_StringVal{"foo"}}},
-		{intf: "a longer multiword string", msg: &pb.TypedValue{Value: &pb.TypedValue_StringVal{"a longer multiword string"}}},
-		{intf: int64(500), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{500}}},
-		{intf: uint64(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{500}}},
-		{intf: float32(3.5), msg: &pb.TypedValue{Value: &pb.TypedValue_FloatVal{3.5}}},
-		{intf: float64(4.5), msg: &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{4.5}}},
-		{intf: true, msg: &pb.TypedValue{Value: &pb.TypedValue_BoolVal{true}}},
-		{intf: false, msg: &pb.TypedValue{Value: &pb.TypedValue_BoolVal{false}}},
+		{intf: "foo", msg: &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "foo"}}},
+		{intf: "a longer multiword string", msg: &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "a longer multiword string"}}},
+		{intf: int64(500), msg: &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 500}}},
+		{intf: uint64(500), msg: &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 500}}},
+		{intf: float32(3.5), msg: &pb.TypedValue{Value: &pb.TypedValue_FloatVal{FloatVal: 3.5}}},
+		{intf: float64(4.5), msg: &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{DoubleVal: 4.5}}},
+		{intf: true, msg: &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: true}}},
+		{intf: false, msg: &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: false}}},
 		{
-			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{
+			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{
 				Element: []*pb.TypedValue{
-					{Value: &pb.TypedValue_StringVal{"a"}},
-					{Value: &pb.TypedValue_StringVal{"b"}},
+					{Value: &pb.TypedValue_StringVal{StringVal: "a"}},
+					{Value: &pb.TypedValue_StringVal{StringVal: "b"}},
 				},
 			}}},
 			intf: []interface{}{"a", "b"},
 		},
 		{
-			msg:  &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{}}},
+			msg:  &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{}}},
 			intf: []interface{}{},
 		},
 		{
@@ -131,16 +131,16 @@ func TestToScalar(t *testing.T) {
 			intf: []interface{}{},
 		},
 		{
-			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{
+			msg: &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{
 				Element: []*pb.TypedValue{
-					{Value: &pb.TypedValue_StringVal{"a"}},
-					{Value: &pb.TypedValue_IntVal{1}},
-					{Value: &pb.TypedValue_UintVal{1}},
+					{Value: &pb.TypedValue_StringVal{StringVal: "a"}},
+					{Value: &pb.TypedValue_IntVal{IntVal: 1}},
+					{Value: &pb.TypedValue_UintVal{UintVal: 1}},
 				},
 			}}},
 			intf: []interface{}{"a", int64(1), uint64(1)},
 		},
-		{intf: []byte("foo"), msg: &pb.TypedValue{Value: &pb.TypedValue_BytesVal{[]byte("foo")}}},
+		{intf: []byte("foo"), msg: &pb.TypedValue{Value: &pb.TypedValue_BytesVal{BytesVal: []byte("foo")}}},
 		{
 			msg: &pb.TypedValue{
 				Value: &pb.TypedValue_DecimalVal{
@@ -213,7 +213,7 @@ func TestToScalar(t *testing.T) {
 
 func TestEqual(t *testing.T) {
 	anyVal := &anypb.Any{}
-	if err := anypb.MarshalFrom(anyVal, &pb.TypedValue{Value: &pb.TypedValue_StringVal{"any val"}}, proto.MarshalOptions{}); err != nil {
+	if err := anypb.MarshalFrom(anyVal, &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "any val"}}, proto.MarshalOptions{}); err != nil {
 		t.Fatalf("MarshalAny: %v", err)
 	}
 	for _, test := range []struct {
@@ -224,119 +224,119 @@ func TestEqual(t *testing.T) {
 		// Equality is true.
 		{
 			name: "String equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{"foo"}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{"foo"}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "foo"}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "foo"}},
 			want: true,
 		}, {
 			name: "Int equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{1234}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{1234}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 1234}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 1234}},
 			want: true,
 		}, {
 			name: "Uint equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{1234}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{1234}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 1234}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 1234}},
 			want: true,
 		}, {
 			name: "Bool equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{true}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{true}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: true}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: true}},
 			want: true,
 		}, {
 			name: "Bytes equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_BytesVal{[]byte{1, 2, 3}}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_BytesVal{[]byte{1, 2, 3}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_BytesVal{BytesVal: []byte{1, 2, 3}}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_BytesVal{BytesVal: []byte{1, 2, 3}}},
 			want: true,
 		}, {
 			name: "Double equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{1234.56789123456}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{1234.56789123456}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{DoubleVal: 1234.56789123456}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{DoubleVal: 1234.56789123456}},
 			want: true,
 		}, {
 			name: "Float equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{1234.56789}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{1234.56789}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{FloatVal: 1234.56789}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{FloatVal: 1234.56789}},
 			want: true,
 		}, {
 			name: "Decimal equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 10}}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 10}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 10}}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 10}}},
 			want: true,
 		}, {
 			name: "Leaflist equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{"one"}}, {Value: &pb.TypedValue_StringVal{"two"}}, {Value: &pb.TypedValue_StringVal{"three"}}}}}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{"one"}}, {Value: &pb.TypedValue_StringVal{"two"}}, {Value: &pb.TypedValue_StringVal{"three"}}}}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{StringVal: "one"}}, {Value: &pb.TypedValue_StringVal{StringVal: "two"}}, {Value: &pb.TypedValue_StringVal{StringVal: "three"}}}}}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{StringVal: "one"}}, {Value: &pb.TypedValue_StringVal{StringVal: "two"}}, {Value: &pb.TypedValue_StringVal{StringVal: "three"}}}}}},
 			want: true,
 		},
 		// Equality is false.
 		{
 			name: "String not equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{"foo"}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{"bar"}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "foo"}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "bar"}},
 		}, {
 			name: "Int not equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{1234}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{123456789}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 1234}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 123456789}},
 		}, {
 			name: "Uint not equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{1234}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{123456789}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 1234}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 123456789}},
 		}, {
 			name: "Bool not equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{false}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{true}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: false}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: true}},
 		}, {
 			name: "Bytes not equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_BytesVal{[]byte{2, 3}}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_BytesVal{[]byte{1, 2, 3}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_BytesVal{BytesVal: []byte{2, 3}}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_BytesVal{BytesVal: []byte{1, 2, 3}}},
 		}, {
 			name: "Double not equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{12340.56789}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{1234.56789}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{DoubleVal: 12340.56789}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{DoubleVal: 1234.56789}},
 		}, {
 			name: "Float not equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{12340.56789}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{1234.56789}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{FloatVal: 12340.56789}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{FloatVal: 1234.56789}},
 		}, {
 			name: "Decimal not equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 11}}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 10}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 11}}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 10}}},
 		}, {
 			name: "Leaflist not equal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{"one"}}, {Value: &pb.TypedValue_StringVal{"two"}}, {Value: &pb.TypedValue_StringVal{"three"}}}}}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{"one"}}, {Value: &pb.TypedValue_StringVal{"two"}}, {Value: &pb.TypedValue_StringVal{"four"}}}}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{StringVal: "one"}}, {Value: &pb.TypedValue_StringVal{StringVal: "two"}}, {Value: &pb.TypedValue_StringVal{StringVal: "three"}}}}}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{StringVal: "one"}}, {Value: &pb.TypedValue_StringVal{StringVal: "two"}}, {Value: &pb.TypedValue_StringVal{StringVal: "four"}}}}}},
 		}, {
 			name: "Types not equal - String",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{"foo"}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 10}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "foo"}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 10}}},
 		}, {
 			name: "Types not equal - Int",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{5}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 10}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 5}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 10}}},
 		}, {
 			name: "Types not equal - Uint",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{5}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 10}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_UintVal{UintVal: 5}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 10}}},
 		}, {
 			name: "Types not equal - Bool",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{true}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 10}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: true}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 10}}},
 		}, {
 			name: "Types not equal - Double",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{5.25}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{5.25}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{FloatVal: 5.25}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DoubleVal{DoubleVal: 5.25}},
 		}, {
 			name: "Types not equal - Float",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{5.25}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 10}}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_FloatVal{FloatVal: 5.25}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 10}}},
 		}, {
 			name: "Types not equal - Decimal",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{&pb.Decimal64{Digits: 1234, Precision: 10}}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{5}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_DecimalVal{DecimalVal: &pb.Decimal64{Digits: 1234, Precision: 10}}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 5}},
 		}, {
 			name: "Types not equal - Leaflist",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{&pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{"one"}}, {Value: &pb.TypedValue_StringVal{"two"}}, {Value: &pb.TypedValue_StringVal{"three"}}}}}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{5}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_LeaflistVal{LeaflistVal: &pb.ScalarArray{Element: []*pb.TypedValue{{Value: &pb.TypedValue_StringVal{StringVal: "one"}}, {Value: &pb.TypedValue_StringVal{StringVal: "two"}}, {Value: &pb.TypedValue_StringVal{StringVal: "three"}}}}}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: 5}},
 		},
 		// Equality is not checked, expect false.
 		{
@@ -349,20 +349,20 @@ func TestEqual(t *testing.T) {
 			b:    &pb.TypedValue{},
 		}, {
 			name: "Proto values not compared",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_AnyVal{anyVal}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_AnyVal{anyVal}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_AnyVal{AnyVal: anyVal}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_AnyVal{AnyVal: anyVal}},
 		}, {
 			name: "JSON values not compared",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_JsonVal{[]byte("5")}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_JsonVal{[]byte("5")}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_JsonVal{JsonVal: []byte("5")}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_JsonVal{JsonVal: []byte("5")}},
 		}, {
 			name: "JSON IETF values not compared",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_JsonIetfVal{[]byte("10.5")}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_JsonIetfVal{[]byte("10.5")}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_JsonIetfVal{JsonIetfVal: []byte("10.5")}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_JsonIetfVal{JsonIetfVal: []byte("10.5")}},
 		}, {
 			name: "ASCII values not compared",
-			a:    &pb.TypedValue{Value: &pb.TypedValue_AsciiVal{"foo"}},
-			b:    &pb.TypedValue{Value: &pb.TypedValue_AsciiVal{"foo"}},
+			a:    &pb.TypedValue{Value: &pb.TypedValue_AsciiVal{AsciiVal: "foo"}},
+			b:    &pb.TypedValue{Value: &pb.TypedValue_AsciiVal{AsciiVal: "foo"}},
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {

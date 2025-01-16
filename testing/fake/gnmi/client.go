@@ -308,7 +308,7 @@ func (c *Client) reset() error {
 			q.Add(&fpb.Value{
 				Timestamp: &fpb.Timestamp{Timestamp: q.Latest()},
 				Repeat:    1,
-				Value:     &fpb.Value_Sync{uint64(1)},
+				Value:     &fpb.Value_Sync{Sync: uint64(1)},
 			})
 		}
 		c.setQueue(q)

@@ -41,12 +41,12 @@ var (
 			{
 				Path:   []string{"a", "b"},
 				Repeat: 3,
-				Value:  &fpb.Value_IntValue{&fpb.IntValue{Value: 4}},
+				Value:  &fpb.Value_IntValue{IntValue: &fpb.IntValue{Value: 4}},
 			},
 			{
 				Path:   []string{"b", "c"},
 				Repeat: 5,
-				Value:  &fpb.Value_StringValue{&fpb.StringValue{Value: "foo"}},
+				Value:  &fpb.Value_StringValue{StringValue: &fpb.StringValue{Value: "foo"}},
 			},
 		},
 		DisableSync: false,

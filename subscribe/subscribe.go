@@ -337,7 +337,7 @@ type resp struct {
 func (s *Server) sendSubscribeResponse(r *resp, c *streamClient) error {
 	notification, err := s.MakeSubscribeResponse(r.n.Value(), r.dup)
 	if err != nil {
-		return status.Errorf(codes.Unknown, err.Error())
+		return status.Error(codes.Unknown, err.Error())
 	}
 
 	if pre := notification.GetUpdate().GetPrefix(); pre != nil {
@@ -363,7 +363,7 @@ func (s *Server) sendSubscribeResponse(r *resp, c *streamClient) error {
 // subscribeSync is a response indicating that a Subscribe RPC has successfully
 // returned all matching nodes once for ONCE and POLLING queries and at least
 // once for STREAMING queries.
-var subscribeSync = &pb.SubscribeResponse{Response: &pb.SubscribeResponse_SyncResponse{true}}
+var subscribeSync = &pb.SubscribeResponse{Response: &pb.SubscribeResponse_SyncResponse{SyncResponse: true}}
 
 type syncMarker struct{}
 

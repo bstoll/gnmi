@@ -35,44 +35,44 @@ func FromScalar(i interface{}) (*pb.TypedValue, error) {
 	switch v := i.(type) {
 	case string:
 		if utf8.ValidString(v) {
-			tv.Value = &pb.TypedValue_StringVal{v}
+			tv.Value = &pb.TypedValue_StringVal{StringVal: v}
 		} else {
 			return nil, fmt.Errorf("string %q contains non-UTF-8 bytes", v)
 		}
 	case int:
-		tv.Value = &pb.TypedValue_IntVal{int64(v)}
+		tv.Value = &pb.TypedValue_IntVal{IntVal: int64(v)}
 	case int8:
-		tv.Value = &pb.TypedValue_IntVal{int64(v)}
+		tv.Value = &pb.TypedValue_IntVal{IntVal: int64(v)}
 	case int16:
-		tv.Value = &pb.TypedValue_IntVal{int64(v)}
+		tv.Value = &pb.TypedValue_IntVal{IntVal: int64(v)}
 	case int32:
-		tv.Value = &pb.TypedValue_IntVal{int64(v)}
+		tv.Value = &pb.TypedValue_IntVal{IntVal: int64(v)}
 	case int64:
-		tv.Value = &pb.TypedValue_IntVal{v}
+		tv.Value = &pb.TypedValue_IntVal{IntVal: v}
 	case uint:
-		tv.Value = &pb.TypedValue_UintVal{uint64(v)}
+		tv.Value = &pb.TypedValue_UintVal{UintVal: uint64(v)}
 	case uint8:
-		tv.Value = &pb.TypedValue_UintVal{uint64(v)}
+		tv.Value = &pb.TypedValue_UintVal{UintVal: uint64(v)}
 	case uint16:
-		tv.Value = &pb.TypedValue_UintVal{uint64(v)}
+		tv.Value = &pb.TypedValue_UintVal{UintVal: uint64(v)}
 	case uint32:
-		tv.Value = &pb.TypedValue_UintVal{uint64(v)}
+		tv.Value = &pb.TypedValue_UintVal{UintVal: uint64(v)}
 	case uint64:
-		tv.Value = &pb.TypedValue_UintVal{v}
+		tv.Value = &pb.TypedValue_UintVal{UintVal: v}
 	case float32:
-		tv.Value = &pb.TypedValue_DoubleVal{float64(v)}
+		tv.Value = &pb.TypedValue_DoubleVal{DoubleVal: float64(v)}
 	case float64:
-		tv.Value = &pb.TypedValue_DoubleVal{v}
+		tv.Value = &pb.TypedValue_DoubleVal{DoubleVal: v}
 	case bool:
-		tv.Value = &pb.TypedValue_BoolVal{v}
+		tv.Value = &pb.TypedValue_BoolVal{BoolVal: v}
 	case []string:
 		sa := &pb.ScalarArray{Element: make([]*pb.TypedValue, len(v))}
 		for x, s := range v {
-			sa.Element[x] = &pb.TypedValue{Value: &pb.TypedValue_StringVal{s}}
+			sa.Element[x] = &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: s}}
 		}
-		tv.Value = &pb.TypedValue_LeaflistVal{sa}
+		tv.Value = &pb.TypedValue_LeaflistVal{LeaflistVal: sa}
 	case []byte:
-		tv.Value = &pb.TypedValue_BytesVal{v}
+		tv.Value = &pb.TypedValue_BytesVal{BytesVal: v}
 	case []interface{}:
 		sa := &pb.ScalarArray{Element: make([]*pb.TypedValue, len(v))}
 		var err error
@@ -82,7 +82,7 @@ func FromScalar(i interface{}) (*pb.TypedValue, error) {
 				return nil, fmt.Errorf("in []interface{}: %v", err)
 			}
 		}
-		tv.Value = &pb.TypedValue_LeaflistVal{sa}
+		tv.Value = &pb.TypedValue_LeaflistVal{LeaflistVal: sa}
 	default:
 		return nil, fmt.Errorf("non-scalar type %+v", i)
 	}

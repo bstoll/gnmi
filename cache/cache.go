@@ -800,13 +800,13 @@ func metaNoti(t, m string, v *pb.TypedValue) *pb.Notification {
 }
 
 func metaNotiBool(t, m string, v bool) *pb.Notification {
-	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_BoolVal{v}})
+	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: v}})
 }
 
 func metaNotiInt(t, m string, v int64) *pb.Notification {
-	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_IntVal{v}})
+	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: v}})
 }
 
 func metaNotiStr(t, m string, v string) *pb.Notification {
-	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_StringVal{v}})
+	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: v}})
 }

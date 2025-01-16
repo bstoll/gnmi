@@ -397,7 +397,7 @@ func TestUpdateSize(t *testing.T) {
 func TestConnectError(t *testing.T) {
 	want := "test error"
 	c := New([]string{"dev1"})
-	c.ConnectError("dev1", fmt.Errorf(want))
+	c.ConnectError("dev1", errors.New(want))
 	c.UpdateMetadata()
 	var got string
 	c.Query("dev1", []string{metadata.Root, metadata.ConnectError}, func(_ []string, _ *ctree.Leaf, v interface{}) error {
@@ -662,9 +662,9 @@ func TestGNMIAtomic(t *testing.T) {
 					Elem:   []*pb.PathElem{{Name: "a"}, {Name: "b", Key: map[string]string{"key": "value"}}},
 				},
 				Update: []*pb.Update{
-					{Path: &pb.Path{Elem: []*pb.PathElem{{Name: "x"}}}, Val: &pb.TypedValue{Value: &pb.TypedValue_StringVal{"x val"}}},
-					{Path: &pb.Path{Elem: []*pb.PathElem{{Name: "y"}}}, Val: &pb.TypedValue{Value: &pb.TypedValue_StringVal{"y val"}}},
-					{Path: &pb.Path{Elem: []*pb.PathElem{{Name: "z"}}}, Val: &pb.TypedValue{Value: &pb.TypedValue_StringVal{"z val"}}},
+					{Path: &pb.Path{Elem: []*pb.PathElem{{Name: "x"}}}, Val: &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "x val"}}},
+					{Path: &pb.Path{Elem: []*pb.PathElem{{Name: "y"}}}, Val: &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "y val"}}},
+					{Path: &pb.Path{Elem: []*pb.PathElem{{Name: "z"}}}, Val: &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "z val"}}},
 				},
 			},
 			queries: []query{
@@ -811,7 +811,7 @@ func TestGNMIUpdateMeta(t *testing.T) {
 			Update: []*pb.Update{
 				{
 					Path: pathGen([]string{"a", "1"}),
-					Val:  &pb.TypedValue{Value: &pb.TypedValue_StringVal{"c"}},
+					Val:  &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "c"}},
 				},
 			},
 		})
@@ -839,7 +839,7 @@ func TestGNMIQueryWithPathElem(t *testing.T) {
 				Update: []*pb.Update{
 					{
 						Path: &pb.Path{Elem: []*pb.PathElem{{Name: "d", Key: map[string]string{"kk": "1", "ff": "2"}}, {Name: "e"}}},
-						Val:  &pb.TypedValue{Value: &pb.TypedValue_StringVal{"value1"}},
+						Val:  &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "value1"}},
 					},
 				},
 				Timestamp: 0,
@@ -857,7 +857,7 @@ func TestGNMIQueryWithPathElem(t *testing.T) {
 				Update: []*pb.Update{
 					{
 						Path: &pb.Path{Elem: []*pb.PathElem{{Name: "d", Key: map[string]string{"kk": "1", "ff": "3"}}, {Name: "e"}}},
-						Val:  &pb.TypedValue{Value: &pb.TypedValue_StringVal{"value2"}},
+						Val:  &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: "value2"}},
 					},
 				},
 				Timestamp: 1,
