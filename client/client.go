@@ -19,20 +19,21 @@ limitations under the License.
 //
 // The Client interface is implemented by 3 types in this package:
 //
-// - BaseClient simply forwards all messages from the underlying connection to
-//   NotificationHandler or ProtoHandler (see type Query).
+//   - BaseClient simply forwards all messages from the underlying connection to
+//     NotificationHandler or ProtoHandler (see type Query).
 //
-// - CacheClient wraps around BaseClient and adds a persistence layer for all
-//   notifications. The notifications build up an internal tree which can be
-//   queried and walked using CacheClient's methods.
+//   - CacheClient wraps around BaseClient and adds a persistence layer for all
+//     notifications. The notifications build up an internal tree which can be
+//     queried and walked using CacheClient's methods.
 //
-// - ReconnectClient wraps around any Client implementation (BaseClient,
-//   CacheClient or a user-provided one) and adds transparent reconnection loop
-//   in Subscribe. Reconnection attempts are done with exponential backoff.
+//   - ReconnectClient wraps around any Client implementation (BaseClient,
+//     CacheClient or a user-provided one) and adds transparent reconnection loop
+//     in Subscribe. Reconnection attempts are done with exponential backoff.
 //
 // This package uses pluggable transport implementations. For example, for gNMI
 // targets you need to add this blank import:
-//  import _ "github.com/openconfig/gnmi/client/gnmi"
+//
+//	import _ "github.com/openconfig/gnmi/client/gnmi"
 //
 // That import will automatically register itself as available ClientType in
 // this package (using func init).

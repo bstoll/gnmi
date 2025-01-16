@@ -21,21 +21,21 @@ limitations under the License.
 package gnmi
 
 import (
-	"golang.org/x/net/context"
 	"errors"
 	"fmt"
+	"golang.org/x/net/context"
 	"net"
 	"strings"
 	"sync"
 
 	log "github.com/golang/glog"
+	"github.com/openconfig/grpctunnel/tunnel"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"github.com/openconfig/grpctunnel/tunnel"
 
-	tunnelpb "github.com/openconfig/grpctunnel/proto/tunnel"
 	gnmipb "github.com/openconfig/gnmi/proto/gnmi"
 	fpb "github.com/openconfig/gnmi/testing/fake/proto"
+	tunnelpb "github.com/openconfig/grpctunnel/proto/tunnel"
 )
 
 // Agent manages a single gNMI agent implementation. Each client that connects
@@ -87,7 +87,7 @@ func NewFromServer(s *grpc.Server, config *fpb.Config) (*Agent, error) {
 	a.lis = append(a.lis, lis)
 
 	if config.TunnelAddr != "" {
-		targets := map[tunnel.Target]struct{}{tunnel.Target{ID: config.Target, Type: tunnelpb.TargetType_GNMI_GNOI.String()}: struct{}{}}
+		targets := map[tunnel.Target]struct{}{{ID: config.Target, Type: tunnelpb.TargetType_GNMI_GNOI.String()}: {}}
 		lis, err = tunnel.Listen(context.Background(), config.TunnelAddr, config.TunnelCrt, targets)
 		if err != nil {
 			return nil, fmt.Errorf("failed to open listener port %d: %v", a.config.Port, err)

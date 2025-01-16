@@ -266,24 +266,24 @@ func TestGlobUpdates(t *testing.T) {
 		{
 			update: stored{ph: []string{"a", Glob}},
 			queries: []*globQuery{
-				&globQuery{query: []string{"a"}, expect: true},
-				&globQuery{query: []string{"a", Glob}, expect: true},
-				&globQuery{query: []string{"a", "b"}, expect: true},
-				&globQuery{query: []string{"b"}, expect: false},
+				{query: []string{"a"}, expect: true},
+				{query: []string{"a", Glob}, expect: true},
+				{query: []string{"a", "b"}, expect: true},
+				{query: []string{"b"}, expect: false},
 			},
 		},
 		// test updates with Glob in the middle of the path
 		{
 			update: stored{ph: []string{"a", Glob, "b"}},
 			queries: []*globQuery{
-				&globQuery{query: []string{"a"}, expect: true},
-				&globQuery{query: []string{"a", Glob}, expect: true},
-				&globQuery{query: []string{"a", "b"}, expect: true},
-				&globQuery{query: []string{"a", "c", "b"}, expect: true},
-				&globQuery{query: []string{"a", "c", "c"}, expect: false},
-				&globQuery{query: []string{"a", Glob, "b"}, expect: true},
-				&globQuery{query: []string{"a", Glob, "c"}, expect: false},
-				&globQuery{query: []string{"b"}, expect: false},
+				{query: []string{"a"}, expect: true},
+				{query: []string{"a", Glob}, expect: true},
+				{query: []string{"a", "b"}, expect: true},
+				{query: []string{"a", "c", "b"}, expect: true},
+				{query: []string{"a", "c", "c"}, expect: false},
+				{query: []string{"a", Glob, "b"}, expect: true},
+				{query: []string{"a", Glob, "c"}, expect: false},
+				{query: []string{"b"}, expect: false},
 			},
 		},
 	}

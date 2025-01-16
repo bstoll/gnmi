@@ -22,11 +22,11 @@ import (
 	"sync"
 
 	log "github.com/golang/glog"
-	"google.golang.org/grpc/codes"
+	"github.com/openconfig/gnmi/testing/fake/queue"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
-	"github.com/openconfig/gnmi/testing/fake/queue"
 
 	gpb "github.com/openconfig/gnmi/proto/gnmi"
 	fpb "github.com/openconfig/gnmi/testing/fake/proto"

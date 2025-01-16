@@ -31,14 +31,14 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"google.golang.org/protobuf/encoding/prototext"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/testing/protocmp"
 	"github.com/openconfig/gnmi/ctree"
 	"github.com/openconfig/gnmi/errdiff"
 	"github.com/openconfig/gnmi/latency"
 	"github.com/openconfig/gnmi/metadata"
 	"github.com/openconfig/gnmi/value"
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/testing/protocmp"
 
 	pb "github.com/openconfig/gnmi/proto/gnmi"
 )
@@ -809,7 +809,7 @@ func TestGNMIUpdateMeta(t *testing.T) {
 			Timestamp: timestamp.UnixNano(),
 			Prefix:    &pb.Path{Target: "dev1"},
 			Update: []*pb.Update{
-				&pb.Update{
+				{
 					Path: pathGen([]string{"a", "1"}),
 					Val:  &pb.TypedValue{Value: &pb.TypedValue_StringVal{"c"}},
 				},
@@ -834,11 +834,11 @@ func TestGNMIQueryWithPathElem(t *testing.T) {
 			n: &pb.Notification{
 				Prefix: &pb.Path{
 					Target: "dev1",
-					Elem:   []*pb.PathElem{&pb.PathElem{Name: "a"}, &pb.PathElem{Name: "b", Key: map[string]string{"bb": "x", "aa": "y"}}, &pb.PathElem{Name: "c"}},
+					Elem:   []*pb.PathElem{{Name: "a"}, {Name: "b", Key: map[string]string{"bb": "x", "aa": "y"}}, {Name: "c"}},
 				},
 				Update: []*pb.Update{
-					&pb.Update{
-						Path: &pb.Path{Elem: []*pb.PathElem{&pb.PathElem{Name: "d", Key: map[string]string{"kk": "1", "ff": "2"}}, &pb.PathElem{Name: "e"}}},
+					{
+						Path: &pb.Path{Elem: []*pb.PathElem{{Name: "d", Key: map[string]string{"kk": "1", "ff": "2"}}, {Name: "e"}}},
 						Val:  &pb.TypedValue{Value: &pb.TypedValue_StringVal{"value1"}},
 					},
 				},
@@ -852,11 +852,11 @@ func TestGNMIQueryWithPathElem(t *testing.T) {
 			n: &pb.Notification{
 				Prefix: &pb.Path{
 					Target: "dev1",
-					Elem:   []*pb.PathElem{&pb.PathElem{Name: "a"}, &pb.PathElem{Name: "b", Key: map[string]string{"bb": "x", "aa": "y"}}, &pb.PathElem{Name: "c"}},
+					Elem:   []*pb.PathElem{{Name: "a"}, {Name: "b", Key: map[string]string{"bb": "x", "aa": "y"}}, {Name: "c"}},
 				},
 				Update: []*pb.Update{
-					&pb.Update{
-						Path: &pb.Path{Elem: []*pb.PathElem{&pb.PathElem{Name: "d", Key: map[string]string{"kk": "1", "ff": "3"}}, &pb.PathElem{Name: "e"}}},
+					{
+						Path: &pb.Path{Elem: []*pb.PathElem{{Name: "d", Key: map[string]string{"kk": "1", "ff": "3"}}, {Name: "e"}}},
 						Val:  &pb.TypedValue{Value: &pb.TypedValue_StringVal{"value2"}},
 					},
 				},
@@ -870,10 +870,10 @@ func TestGNMIQueryWithPathElem(t *testing.T) {
 			n: &pb.Notification{
 				Prefix: &pb.Path{
 					Target: "dev1",
-					Elem:   []*pb.PathElem{&pb.PathElem{Name: "a"}, &pb.PathElem{Name: "b", Key: map[string]string{"bb": "x", "aa": "y"}}, &pb.PathElem{Name: "c"}},
+					Elem:   []*pb.PathElem{{Name: "a"}, {Name: "b", Key: map[string]string{"bb": "x", "aa": "y"}}, {Name: "c"}},
 				},
 				Delete: []*pb.Path{
-					&pb.Path{Elem: []*pb.PathElem{&pb.PathElem{Name: "d", Key: map[string]string{"kk": "1", "ff": "2"}}, &pb.PathElem{Name: "e"}}},
+					{Elem: []*pb.PathElem{{Name: "d", Key: map[string]string{"kk": "1", "ff": "2"}}, {Name: "e"}}},
 				},
 				Timestamp: 2,
 			},

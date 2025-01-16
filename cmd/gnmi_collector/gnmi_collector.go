@@ -28,24 +28,23 @@ import (
 	"net"
 	"time"
 
-	
 	log "github.com/golang/glog"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc"
-	"github.com/openconfig/grpctunnel/dialer"
-	"github.com/openconfig/grpctunnel/tunnel"
-	"google.golang.org/protobuf/encoding/prototext"
 	"github.com/openconfig/gnmi/cache"
 	coll "github.com/openconfig/gnmi/collector"
 	"github.com/openconfig/gnmi/connection"
 	"github.com/openconfig/gnmi/manager"
 	"github.com/openconfig/gnmi/subscribe"
 	"github.com/openconfig/gnmi/target"
+	"github.com/openconfig/grpctunnel/dialer"
+	"github.com/openconfig/grpctunnel/tunnel"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/protobuf/encoding/prototext"
 
-	tunnelpb "github.com/openconfig/grpctunnel/proto/tunnel"
 	cpb "github.com/openconfig/gnmi/proto/collector"
 	gnmipb "github.com/openconfig/gnmi/proto/gnmi"
 	tpb "github.com/openconfig/gnmi/proto/target"
+	tunnelpb "github.com/openconfig/grpctunnel/proto/tunnel"
 )
 
 var (

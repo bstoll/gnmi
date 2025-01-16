@@ -31,9 +31,6 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/peer"
-	"google.golang.org/protobuf/proto"
 	"github.com/openconfig/gnmi/cache"
 	"github.com/openconfig/gnmi/client"
 	gnmiclient "github.com/openconfig/gnmi/client/gnmi"
@@ -41,6 +38,9 @@ import (
 	"github.com/openconfig/gnmi/path"
 	"github.com/openconfig/gnmi/testing/fake/testing/grpc/config"
 	"github.com/openconfig/gnmi/value"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/peer"
+	"google.golang.org/protobuf/proto"
 
 	pb "github.com/openconfig/gnmi/proto/gnmi"
 )
@@ -1107,8 +1107,8 @@ func TestGNMIServerStats(t *testing.T) {
 	}()
 	<-ready1
 	checkSubsCounts(t, "one stream client to dev1",
-		s.TypeStats(), map[string]TypeStats{"stream": TypeStats{ActiveSubscriptionCount: 1, SubscriptionCount: 1}},
-		s.TargetStats(), map[string]TargetStats{"dev1": TargetStats{ActiveSubscriptionCount: 1, SubscriptionCount: 1}})
+		s.TypeStats(), map[string]TypeStats{"stream": {ActiveSubscriptionCount: 1, SubscriptionCount: 1}},
+		s.TargetStats(), map[string]TargetStats{"dev1": {ActiveSubscriptionCount: 1, SubscriptionCount: 1}})
 
 	c2 := client.BaseClient{}
 	q.Target = "dev2"
@@ -1118,10 +1118,10 @@ func TestGNMIServerStats(t *testing.T) {
 	}()
 	<-ready2
 	checkSubsCounts(t, "one stream client to dev1 + one stream client to dev2",
-		s.TypeStats(), map[string]TypeStats{"stream": TypeStats{ActiveSubscriptionCount: 2, SubscriptionCount: 2}},
+		s.TypeStats(), map[string]TypeStats{"stream": {ActiveSubscriptionCount: 2, SubscriptionCount: 2}},
 		s.TargetStats(), map[string]TargetStats{
-			"dev1": TargetStats{ActiveSubscriptionCount: 1, SubscriptionCount: 1},
-			"dev2": TargetStats{ActiveSubscriptionCount: 1, SubscriptionCount: 1},
+			"dev1": {ActiveSubscriptionCount: 1, SubscriptionCount: 1},
+			"dev2": {ActiveSubscriptionCount: 1, SubscriptionCount: 1},
 		})
 
 	c3 := client.BaseClient{}
@@ -1134,48 +1134,48 @@ func TestGNMIServerStats(t *testing.T) {
 	<-ready3
 	checkSubsCounts(t, "one stream client to dev1 + one stream client to dev2 + one poll client to dev1",
 		s.TypeStats(), map[string]TypeStats{
-			"stream": TypeStats{ActiveSubscriptionCount: 2, SubscriptionCount: 2},
-			"poll":   TypeStats{ActiveSubscriptionCount: 1, SubscriptionCount: 1},
+			"stream": {ActiveSubscriptionCount: 2, SubscriptionCount: 2},
+			"poll":   {ActiveSubscriptionCount: 1, SubscriptionCount: 1},
 		},
 		s.TargetStats(), map[string]TargetStats{
-			"dev1": TargetStats{ActiveSubscriptionCount: 2, SubscriptionCount: 2},
-			"dev2": TargetStats{ActiveSubscriptionCount: 1, SubscriptionCount: 1},
+			"dev1": {ActiveSubscriptionCount: 2, SubscriptionCount: 2},
+			"dev2": {ActiveSubscriptionCount: 1, SubscriptionCount: 1},
 		})
 
 	cancel1()
 	<-wait1
 	checkSubsCounts(t, "one stream client to dev1 cancelled + one stream client to dev2 + one poll client to dev1",
 		s.TypeStats(), map[string]TypeStats{
-			"stream": TypeStats{ActiveSubscriptionCount: 1, SubscriptionCount: 2},
-			"poll":   TypeStats{ActiveSubscriptionCount: 1, SubscriptionCount: 1},
+			"stream": {ActiveSubscriptionCount: 1, SubscriptionCount: 2},
+			"poll":   {ActiveSubscriptionCount: 1, SubscriptionCount: 1},
 		},
 		s.TargetStats(), map[string]TargetStats{
-			"dev1": TargetStats{ActiveSubscriptionCount: 1, SubscriptionCount: 2},
-			"dev2": TargetStats{ActiveSubscriptionCount: 1, SubscriptionCount: 1},
+			"dev1": {ActiveSubscriptionCount: 1, SubscriptionCount: 2},
+			"dev2": {ActiveSubscriptionCount: 1, SubscriptionCount: 1},
 		})
 
 	cancel2()
 	<-wait2
 	checkSubsCounts(t, "one stream client to dev1 cancelled + one stream client to dev2 cancelled + one poll client to dev1",
 		s.TypeStats(), map[string]TypeStats{
-			"stream": TypeStats{ActiveSubscriptionCount: 0, SubscriptionCount: 2},
-			"poll":   TypeStats{ActiveSubscriptionCount: 1, SubscriptionCount: 1},
+			"stream": {ActiveSubscriptionCount: 0, SubscriptionCount: 2},
+			"poll":   {ActiveSubscriptionCount: 1, SubscriptionCount: 1},
 		},
 		s.TargetStats(), map[string]TargetStats{
-			"dev1": TargetStats{ActiveSubscriptionCount: 1, SubscriptionCount: 2},
-			"dev2": TargetStats{ActiveSubscriptionCount: 0, SubscriptionCount: 1},
+			"dev1": {ActiveSubscriptionCount: 1, SubscriptionCount: 2},
+			"dev2": {ActiveSubscriptionCount: 0, SubscriptionCount: 1},
 		})
 
 	cancel3()
 	<-wait3
 	checkSubsCounts(t, "one stream client to dev1 cancelled + one stream client to dev2 cancelled + one poll client to dev1 cancelled",
 		s.TypeStats(), map[string]TypeStats{
-			"stream": TypeStats{ActiveSubscriptionCount: 0, SubscriptionCount: 2},
-			"poll":   TypeStats{ActiveSubscriptionCount: 0, SubscriptionCount: 1},
+			"stream": {ActiveSubscriptionCount: 0, SubscriptionCount: 2},
+			"poll":   {ActiveSubscriptionCount: 0, SubscriptionCount: 1},
 		},
 		s.TargetStats(), map[string]TargetStats{
-			"dev1": TargetStats{ActiveSubscriptionCount: 0, SubscriptionCount: 2},
-			"dev2": TargetStats{ActiveSubscriptionCount: 0, SubscriptionCount: 1},
+			"dev1": {ActiveSubscriptionCount: 0, SubscriptionCount: 2},
+			"dev2": {ActiveSubscriptionCount: 0, SubscriptionCount: 1},
 		})
 }
 
@@ -1370,11 +1370,11 @@ func TestGNMIACL(t *testing.T) {
 						Target: test.dev,
 					},
 					Subscription: []*pb.Subscription{
-						&pb.Subscription{
+						{
 							Path: &pb.Path{
 								Element: []string{"a"},
 								Elem: []*pb.PathElem{
-									&pb.PathElem{
+									{
 										Name: "a",
 									},
 								},
