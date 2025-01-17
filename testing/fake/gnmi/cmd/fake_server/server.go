@@ -22,16 +22,16 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"flag"
-	
+
 	log "github.com/golang/glog"
-	"google.golang.org/grpc/credentials"
+	"github.com/openconfig/gnmi/testing/fake/gnmi"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
-	"github.com/openconfig/gnmi/testing/fake/gnmi"
 
 	fpb "github.com/openconfig/gnmi/testing/fake/proto"
 )
@@ -51,7 +51,7 @@ var (
 )
 
 func loadConfig(fileName string) (*fpb.Config, error) {
-	in, err := ioutil.ReadFile(fileName)
+	in, err := os.ReadFile(fileName)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func main() {
 	}
 
 	if *caCert != "" {
-		ca, err := ioutil.ReadFile(*caCert)
+		ca, err := os.ReadFile(*caCert)
 		if err != nil {
 			log.Exitf("could not read CA certificate: %s", err)
 		}

@@ -30,10 +30,10 @@ import (
 	"time"
 
 	log "github.com/golang/glog"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 	"github.com/openconfig/gnmi/connection"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/protobuf/proto"
 
 	gpb "github.com/openconfig/gnmi/proto/gnmi"
 	tpb "github.com/openconfig/gnmi/proto/target"
@@ -42,7 +42,7 @@ import (
 var (
 	validSubscribeRequest = &gpb.SubscribeRequest{
 		Request: &gpb.SubscribeRequest_Subscribe{
-			&gpb.SubscriptionList{
+			Subscribe: &gpb.SubscriptionList{
 				Subscription: []*gpb.Subscription{
 					{
 						Path: &gpb.Path{
@@ -500,10 +500,8 @@ func TestRetrySubscribe(t *testing.T) {
 	fc.stageSendErr() // Initial failure causing retry.
 	subscribeClient = func(ctx context.Context, conn *grpc.ClientConn) (gpb.GNMI_SubscribeClient, error) {
 		go func() {
-			select {
-			case <-ctx.Done():
-				fc.sendRecvErr() // Simulate stream closure.
-			}
+			<-ctx.Done()
+			fc.sendRecvErr() // Simulate stream closure.
 		}()
 		return fc, nil
 	}
@@ -613,10 +611,8 @@ func TestReceiveTimeout(t *testing.T) {
 	fc := newFakeSubscribeClient()
 	subscribeClient = func(ctx context.Context, conn *grpc.ClientConn) (gpb.GNMI_SubscribeClient, error) {
 		go func() {
-			select {
-			case <-ctx.Done():
-				fc.sendRecvErr() // Simulate stream closure.
-			}
+			<-ctx.Done()
+			fc.sendRecvErr() // Simulate stream closure.
 		}()
 		return fc, nil
 	}
@@ -775,10 +771,8 @@ func TestRemoveDuringBackoff(t *testing.T) {
 	fc := newFakeSubscribeClient()
 	subscribeClient = func(ctx context.Context, conn *grpc.ClientConn) (gpb.GNMI_SubscribeClient, error) {
 		go func() {
-			select {
-			case <-ctx.Done():
-				fc.sendRecvErr() // Simulate stream closure.
-			}
+			<-ctx.Done()
+			fc.sendRecvErr() // Simulate stream closure.
 		}()
 		return fc, nil
 	}
@@ -854,7 +848,7 @@ func TestCustomizeRequest(t *testing.T) {
 			desc: "no existing prefix",
 			sr: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Subscription: []*gpb.Subscription{
 							{
 								Path: &gpb.Path{
@@ -867,7 +861,7 @@ func TestCustomizeRequest(t *testing.T) {
 			},
 			want: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Target: dev},
 						Subscription: []*gpb.Subscription{
 							{
@@ -884,7 +878,7 @@ func TestCustomizeRequest(t *testing.T) {
 			desc: "existing prefix",
 			sr: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Origin: "openconfig"},
 						Subscription: []*gpb.Subscription{
 							{
@@ -898,7 +892,7 @@ func TestCustomizeRequest(t *testing.T) {
 			},
 			want: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Origin: "openconfig", Target: dev},
 						Subscription: []*gpb.Subscription{
 							{
@@ -915,7 +909,7 @@ func TestCustomizeRequest(t *testing.T) {
 			desc: "existing prefix with target",
 			sr: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Origin: "openconfig", Target: "unknown target"},
 						Subscription: []*gpb.Subscription{
 							{
@@ -929,7 +923,7 @@ func TestCustomizeRequest(t *testing.T) {
 			},
 			want: &gpb.SubscribeRequest{
 				Request: &gpb.SubscribeRequest_Subscribe{
-					&gpb.SubscriptionList{
+					Subscribe: &gpb.SubscriptionList{
 						Prefix: &gpb.Path{Origin: "openconfig", Target: dev},
 						Subscription: []*gpb.Subscription{
 							{

@@ -23,8 +23,8 @@ import (
 // TypeStats is the container of client side statistics for a particular
 // subscribe mode, e.g. stream, once, or poll.
 type TypeStats struct {
-	ActiveSubscriptionCount  int64 // currently active subscription count
-	SubscriptionCount        int64 // total subscription count, cumulative
+	ActiveSubscriptionCount int64 // currently active subscription count
+	SubscriptionCount       int64 // total subscription count, cumulative
 }
 
 // TargetStats is the container of client side statistics for a target.

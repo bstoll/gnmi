@@ -22,8 +22,8 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/proto"
 	"github.com/openconfig/gnmi/errdiff"
+	"google.golang.org/protobuf/proto"
 
 	gpb "github.com/openconfig/gnmi/proto/gnmi"
 	fpb "github.com/openconfig/gnmi/testing/fake/proto"
@@ -94,115 +94,115 @@ func TestUpdateIntValue(t *testing.T) {
 	}, {
 		desc: "Invalid min/max in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        50,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 100, Maximum: 0}}}}},
 		err: "invalid minimum/maximum in IntRange",
 	}, {
 		desc: "Invalid init value (value < min) in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        -100,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100}}}}},
 		err: "value not in [minimum, maximum] in IntRange",
 	}, {
 		desc: "Invalid init value (value > max) in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        200,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100}}}}},
 		err: "value not in [minimum, maximum] in IntRange",
 	}, {
 		desc: "Invalid delta_min/delta_max in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        50,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100, DeltaMin: 10, DeltaMax: 5}}}}},
 		err: "invalid delta_min/delta_max in IntRange",
 	}, {
 		desc: "Non-empty value, non-cumulative in range, using global seed",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        50,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        65,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100}}}}},
 	}, {
 		desc: "Non-empty value, non-cumulative in range, using local seed",
 		value: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value: 50, Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100}}}}},
 		want: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        69,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100}}}}},
 	}, {
 		desc: "Non-empty value, cumulative in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        50,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100, DeltaMin: 10, DeltaMax: 10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        60,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100, DeltaMin: 10, DeltaMax: 10}}}}},
 	}, {
 		desc: "Non-empty value, cumulative, maximum capped in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        50,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 51, DeltaMin: 10, DeltaMax: 10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        51,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 51, DeltaMin: 10, DeltaMax: 10}}}}},
 	}, {
 		desc: "Non-empty value, cumulative, minimum capped in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        50,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 45, Maximum: 60, DeltaMin: -10, DeltaMax: -10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value: 45,
 				Distribution: &fpb.IntValue_Range{
 					Range: &fpb.IntRange{Minimum: 45, Maximum: 60, DeltaMin: -10, DeltaMax: -10}}}}},
 	}, {
 		desc: "no options, random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{Distribution: &fpb.IntValue_List{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{Distribution: &fpb.IntValue_List{
 				List: &fpb.IntList{Random: true}}}}},
 		err: "missing options on IntValue_List",
 	}, {
 		desc: "four options, random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{Distribution: &fpb.IntValue_List{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{Distribution: &fpb.IntValue_List{
 				List: &fpb.IntList{Options: []int64{100, 200, 300, 400}, Random: true}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value: 400,
 				Distribution: &fpb.IntValue_List{
 					List: &fpb.IntList{Options: []int64{100, 200, 300, 400}, Random: true}}}}},
 	}, {
 		desc: "four options, non-random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{Distribution: &fpb.IntValue_List{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{Distribution: &fpb.IntValue_List{
 				List: &fpb.IntList{Options: []int64{100, 200, 300, 400}, Random: false}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value: 100,
 				Distribution: &fpb.IntValue_List{
 					List: &fpb.IntList{Options: []int64{200, 300, 400, 100}, Random: false}}}}},
 	}, {
 		desc: "constant",
 		value: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{Value: 100}}},
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{Value: 100}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_IntValue{&fpb.IntValue{Value: 100}}},
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{Value: 100}}},
 	}}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -231,112 +231,112 @@ func TestUpdateDoubleValue(t *testing.T) {
 	}, {
 		desc: "Invalid min/max in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value:        50,
 				Distribution: &fpb.DoubleValue_Range{Range: &fpb.DoubleRange{Minimum: 100, Maximum: 0}}}}},
 		err: "invalid minimum/maximum on DoubleValue_Range",
 	}, {
 		desc: "Invalid init value (value > max) in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value:        200,
 				Distribution: &fpb.DoubleValue_Range{Range: &fpb.DoubleRange{Minimum: 0, Maximum: 100}}}}},
 		err: "value not in [minimum, maximum] on DoubleValue_Range",
 	}, {
 		desc: "Invalid delta_min/delta_max in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value:        50,
 				Distribution: &fpb.DoubleValue_Range{Range: &fpb.DoubleRange{Minimum: 0, Maximum: 100, DeltaMin: 10, DeltaMax: 5}}}}},
 		err: "invalid delta_min/delta_max on DoubleValue_Range",
 	}, {
 		desc: "Non-empty value, non-cumulative in range, using global seed",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value:        50,
 				Distribution: &fpb.DoubleValue_Range{Range: &fpb.DoubleRange{Minimum: 0, Maximum: 100}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value:        81.65026937796166,
 				Distribution: &fpb.DoubleValue_Range{Range: &fpb.DoubleRange{Minimum: 0, Maximum: 100}}}}},
 	}, {
 		desc: "Non-empty value, non-cumulative in range, using local seed",
 		value: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value:        50,
 				Distribution: &fpb.DoubleValue_Range{Range: &fpb.DoubleRange{Minimum: 0, Maximum: 100}}}}},
 		want: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value: 56.60920659323543,
 				Distribution: &fpb.DoubleValue_Range{
 					Range: &fpb.DoubleRange{Minimum: 0, Maximum: 100}}}}},
 	}, {
 		desc: "Non-empty value, cumulative in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value:        50,
 				Distribution: &fpb.DoubleValue_Range{Range: &fpb.DoubleRange{Minimum: 0, Maximum: 100, DeltaMin: 10, DeltaMax: 10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value: 60,
 				Distribution: &fpb.DoubleValue_Range{
 					Range: &fpb.DoubleRange{Minimum: 0, Maximum: 100, DeltaMin: 10, DeltaMax: 10}}}}},
 	}, {
 		desc: "Non-empty value, cumulative, maximum capped in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value:        50,
 				Distribution: &fpb.DoubleValue_Range{Range: &fpb.DoubleRange{Minimum: 0, Maximum: 51, DeltaMin: 10, DeltaMax: 10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value: 51,
 				Distribution: &fpb.DoubleValue_Range{
 					Range: &fpb.DoubleRange{Minimum: 0, Maximum: 51, DeltaMin: 10, DeltaMax: 10}}}}},
 	}, {
 		desc: "Non-empty value, cumulative, minimum capped in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value:        50,
 				Distribution: &fpb.DoubleValue_Range{Range: &fpb.DoubleRange{Minimum: 45, Maximum: 60, DeltaMin: -10, DeltaMax: -10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value: 45,
 				Distribution: &fpb.DoubleValue_Range{
 					Range: &fpb.DoubleRange{Minimum: 45, Maximum: 60, DeltaMin: -10, DeltaMax: -10}}}}},
 	}, {
 		desc: "no options, random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{Distribution: &fpb.DoubleValue_List{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{Distribution: &fpb.DoubleValue_List{
 				List: &fpb.DoubleList{Random: true}}}}},
 		err: "missing options on DoubleValue_List",
 	}, {
 		desc: "four options, random in list, using global seed",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{Distribution: &fpb.DoubleValue_List{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{Distribution: &fpb.DoubleValue_List{
 				List: &fpb.DoubleList{Options: []float64{100, 200, 300, 400}, Random: true}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value: 400,
 				Distribution: &fpb.DoubleValue_List{
 					List: &fpb.DoubleList{Options: []float64{100, 200, 300, 400}, Random: true}}}}},
 	}, {
 		desc: "four options, non-random in list, using global seed",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{Distribution: &fpb.DoubleValue_List{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{Distribution: &fpb.DoubleValue_List{
 				List: &fpb.DoubleList{Options: []float64{100, 200, 300, 400}, Random: false}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{
 				Value: 100,
 				Distribution: &fpb.DoubleValue_List{
 					List: &fpb.DoubleList{Options: []float64{200, 300, 400, 100}, Random: false}}}}},
 	}, {
 		desc: "constant",
 		value: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{Value: 100}}},
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{Value: 100}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{Value: 100}}},
+			Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{Value: 100}}},
 	}}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -368,16 +368,16 @@ func TestUpdateBoolValue(t *testing.T) {
 	}, {
 		desc: "no options, random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_BoolValue{&fpb.BoolValue{Distribution: &fpb.BoolValue_List{
+			Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{Distribution: &fpb.BoolValue_List{
 				List: &fpb.BoolList{Random: true}}}}},
 		err: "missing options on BoolValue_List",
 	}, {
 		desc: "Four options, random in list, using global seed",
 		value: &fpb.Value{
-			Value: &fpb.Value_BoolValue{&fpb.BoolValue{Distribution: &fpb.BoolValue_List{
+			Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{Distribution: &fpb.BoolValue_List{
 				List: &fpb.BoolList{Options: []bool{true, true, false, false}, Random: true}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_BoolValue{&fpb.BoolValue{
+			Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{
 				Value: false,
 				Distribution: &fpb.BoolValue_List{
 					List: &fpb.BoolList{
@@ -386,30 +386,30 @@ func TestUpdateBoolValue(t *testing.T) {
 		desc: "Four options, random in list, using local seed",
 		value: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_BoolValue{&fpb.BoolValue{Distribution: &fpb.BoolValue_List{
+			Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{Distribution: &fpb.BoolValue_List{
 				List: &fpb.BoolList{Random: true, Options: []bool{true, true, false, false}}}}}},
 		want: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_BoolValue{&fpb.BoolValue{
+			Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{
 				Value: false,
 				Distribution: &fpb.BoolValue_List{
 					List: &fpb.BoolList{Random: true, Options: []bool{true, true, false, false}}}}}},
 	}, {
 		desc: "Four options, non-random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_BoolValue{&fpb.BoolValue{Distribution: &fpb.BoolValue_List{
+			Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{Distribution: &fpb.BoolValue_List{
 				List: &fpb.BoolList{Random: false, Options: []bool{true, true, false, false}}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_BoolValue{&fpb.BoolValue{
+			Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{
 				Value: true,
 				Distribution: &fpb.BoolValue_List{
 					List: &fpb.BoolList{Random: false, Options: []bool{true, false, false, true}}}}}},
 	}, {
 		desc: "constant",
 		value: &fpb.Value{
-			Value: &fpb.Value_BoolValue{&fpb.BoolValue{Value: true}}},
+			Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{Value: true}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_BoolValue{&fpb.BoolValue{Value: true}}},
+			Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{Value: true}}},
 	}}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -438,16 +438,16 @@ func TestUpdateStringValue(t *testing.T) {
 	}, {
 		desc: "no options, random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_StringValue{&fpb.StringValue{Distribution: &fpb.StringValue_List{
+			Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{Distribution: &fpb.StringValue_List{
 				List: &fpb.StringList{Random: true}}}}},
 		err: "missing options on StringValue_List",
 	}, {
 		desc: "Four options, random in list, using global seed",
 		value: &fpb.Value{
-			Value: &fpb.Value_StringValue{&fpb.StringValue{Distribution: &fpb.StringValue_List{
+			Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{Distribution: &fpb.StringValue_List{
 				List: &fpb.StringList{Options: []string{"a", "b", "c", "d"}, Random: true}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_StringValue{&fpb.StringValue{
+			Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{
 				Value: "d",
 				Distribution: &fpb.StringValue_List{
 					List: &fpb.StringList{
@@ -456,30 +456,30 @@ func TestUpdateStringValue(t *testing.T) {
 		desc: "Four options, random in list, using local seed",
 		value: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_StringValue{&fpb.StringValue{Distribution: &fpb.StringValue_List{
+			Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{Distribution: &fpb.StringValue_List{
 				List: &fpb.StringList{Random: true, Options: []string{"a", "b", "c", "d"}}}}}},
 		want: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_StringValue{&fpb.StringValue{
+			Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{
 				Value: "c",
 				Distribution: &fpb.StringValue_List{
 					List: &fpb.StringList{Random: true, Options: []string{"a", "b", "c", "d"}}}}}},
 	}, {
 		desc: "Four options, non-random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_StringValue{&fpb.StringValue{Distribution: &fpb.StringValue_List{
+			Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{Distribution: &fpb.StringValue_List{
 				List: &fpb.StringList{Random: false, Options: []string{"a", "b", "c", "d"}}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_StringValue{&fpb.StringValue{
+			Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{
 				Value: "a",
 				Distribution: &fpb.StringValue_List{
 					List: &fpb.StringList{Random: false, Options: []string{"b", "c", "d", "a"}}}}}},
 	}, {
 		desc: "constant",
 		value: &fpb.Value{
-			Value: &fpb.Value_StringValue{&fpb.StringValue{Value: "a"}}},
+			Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{Value: "a"}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_StringValue{&fpb.StringValue{Value: "a"}}},
+			Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{Value: "a"}}},
 	}}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -508,126 +508,126 @@ func TestUpdateUintValue(t *testing.T) {
 	}, {
 		desc: "Invalid min/max in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        50,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 100, Maximum: 0}}}}},
 		err: "invalid minimum/maximum in UintRange",
 	}, {
 		desc: "Invalid init value (value < min) in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        1,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 10, Maximum: 100}}}}},
 		err: "value not in [minimum, maximum] in UintRange",
 	}, {
 		desc: "Invalid init value (value > max) in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        200,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 100}}}}},
 		err: "value not in [minimum, maximum] in UintRange",
 	}, {
 		desc: "Invalid delta_min/delta_max in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        50,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 100, DeltaMin: 10, DeltaMax: 5}}}}},
 		err: "invalid delta_min/delta_max in UintRange",
 	}, {
 		desc: "Non-empty value, non-cumulative in range, using global seed",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        50,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 100}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        65,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 100}}}}},
 	}, {
 		desc: "Non-empty value, non-cumulative in range, using local seed",
 		value: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value: 50, Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 100}}}}},
 		want: &fpb.Value{
 			Seed: 10,
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        69,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 100}}}}},
 	}, {
 		desc: "Non-empty value, cumulative in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        50,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 100, DeltaMin: 10, DeltaMax: 10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        60,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 100, DeltaMin: 10, DeltaMax: 10}}}}},
 	}, {
 		desc: "Non-empty value, cumulative, maximum capped in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        50,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 51, DeltaMin: 10, DeltaMax: 10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        51,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 0, Maximum: 51, DeltaMin: 10, DeltaMax: 10}}}}},
 	}, {
 		desc: "Non-empty value, cumulative, minimum capped in range",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        50,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 45, Maximum: 60, DeltaMin: -10, DeltaMax: -10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value: 45,
 				Distribution: &fpb.UintValue_Range{
 					Range: &fpb.UintRange{Minimum: 45, Maximum: 60, DeltaMin: -10, DeltaMax: -10}}}}},
 	}, {
 		desc: "Non-empty value, cumulative, minimum capped due to negative value",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        8,
 				Distribution: &fpb.UintValue_Range{Range: &fpb.UintRange{Minimum: 5, Maximum: 60, DeltaMin: -10, DeltaMax: -10}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value: 5,
 				Distribution: &fpb.UintValue_Range{
 					Range: &fpb.UintRange{Minimum: 5, Maximum: 60, DeltaMin: -10, DeltaMax: -10}}}}},
 	}, {
 		desc: "no options, random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{Distribution: &fpb.UintValue_List{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{Distribution: &fpb.UintValue_List{
 				List: &fpb.UintList{Random: true}}}}},
 		err: "missing options on UintValue_List",
 	}, {
 		desc: "four options, random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{Distribution: &fpb.UintValue_List{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{Distribution: &fpb.UintValue_List{
 				List: &fpb.UintList{Options: []uint64{100, 200, 300, 400}, Random: true}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value: 400,
 				Distribution: &fpb.UintValue_List{
 					List: &fpb.UintList{Options: []uint64{100, 200, 300, 400}, Random: true}}}}},
 	}, {
 		desc: "four options, non-random in list",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{Distribution: &fpb.UintValue_List{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{Distribution: &fpb.UintValue_List{
 				List: &fpb.UintList{Options: []uint64{100, 200, 300, 400}, Random: false}}}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value: 100,
 				Distribution: &fpb.UintValue_List{
 					List: &fpb.UintList{Options: []uint64{200, 300, 400, 100}, Random: false}}}}},
 	}, {
 		desc: "constant",
 		value: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{Value: 100}}},
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{Value: 100}}},
 		want: &fpb.Value{
-			Value: &fpb.Value_UintValue{&fpb.UintValue{Value: 100}}},
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{Value: 100}}},
 	}}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -663,12 +663,12 @@ func TestNextValue(t *testing.T) {
 		desc: "Indefinite updates",
 		in: &fpb.Value{
 			Timestamp: &fpb.Timestamp{Timestamp: 1234, DeltaMin: 1, DeltaMax: 1},
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        50,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100}}}}},
 		want: &fpb.Value{
 			Timestamp: &fpb.Timestamp{Timestamp: 1235, DeltaMin: 1, DeltaMax: 1},
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        80,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{Minimum: 0, Maximum: 100}}}}},
 	}, {
@@ -676,11 +676,11 @@ func TestNextValue(t *testing.T) {
 		in: &fpb.Value{
 			Repeat:    5,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234, DeltaMin: 1, DeltaMax: 1},
-			Value:     &fpb.Value_IntValue{&fpb.IntValue{Distribution: &fpb.IntValue_List{List: &fpb.IntList{Options: []int64{10, 20, 30}, Random: false}}}}},
+			Value:     &fpb.Value_IntValue{IntValue: &fpb.IntValue{Distribution: &fpb.IntValue_List{List: &fpb.IntList{Options: []int64{10, 20, 30}, Random: false}}}}},
 		want: &fpb.Value{
 			Repeat:    4,
 			Timestamp: &fpb.Timestamp{Timestamp: 1235, DeltaMin: 1, DeltaMax: 1},
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value:        10,
 				Distribution: &fpb.IntValue_List{List: &fpb.IntList{Options: []int64{20, 30, 10}, Random: false}}}}},
 	}, {
@@ -688,23 +688,23 @@ func TestNextValue(t *testing.T) {
 		in: &fpb.Value{
 			Repeat:    5,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234, DeltaMin: 1, DeltaMax: 1},
-			Value:     &fpb.Value_DoubleValue{&fpb.DoubleValue{Value: 50.1}},
+			Value:     &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{Value: 50.1}},
 		},
 		want: &fpb.Value{
 			Repeat:    4,
 			Timestamp: &fpb.Timestamp{Timestamp: 1235, DeltaMin: 1, DeltaMax: 1},
-			Value:     &fpb.Value_DoubleValue{&fpb.DoubleValue{Value: 50.1}},
+			Value:     &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{Value: 50.1}},
 		},
 	}, {
 		desc: "Repeat UintValue",
 		in: &fpb.Value{
 			Repeat:    5,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234, DeltaMin: 1, DeltaMax: 1},
-			Value:     &fpb.Value_UintValue{&fpb.UintValue{Distribution: &fpb.UintValue_List{List: &fpb.UintList{Options: []uint64{10, 20, 30}, Random: false}}}}},
+			Value:     &fpb.Value_UintValue{UintValue: &fpb.UintValue{Distribution: &fpb.UintValue_List{List: &fpb.UintList{Options: []uint64{10, 20, 30}, Random: false}}}}},
 		want: &fpb.Value{
 			Repeat:    4,
 			Timestamp: &fpb.Timestamp{Timestamp: 1235, DeltaMin: 1, DeltaMax: 1},
-			Value: &fpb.Value_UintValue{&fpb.UintValue{
+			Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{
 				Value:        10,
 				Distribution: &fpb.UintValue_List{List: &fpb.UintList{Options: []uint64{20, 30, 10}, Random: false}}}}},
 	}, {
@@ -712,50 +712,50 @@ func TestNextValue(t *testing.T) {
 		in: &fpb.Value{
 			Repeat:    1,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234, DeltaMin: 1, DeltaMax: 1},
-			Value:     &fpb.Value_IntValue{&fpb.IntValue{Value: 50}},
+			Value:     &fpb.Value_IntValue{IntValue: &fpb.IntValue{Value: 50}},
 		},
 	}, {
 		desc: "Last repeat with constant string value",
 		in: &fpb.Value{
 			Repeat:    1,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234, DeltaMin: 1, DeltaMax: 1},
-			Value:     &fpb.Value_StringValue{&fpb.StringValue{Value: "a"}},
+			Value:     &fpb.Value_StringValue{StringValue: &fpb.StringValue{Value: "a"}},
 		},
 	}, {
 		desc: "String value",
 		in: &fpb.Value{
 			Repeat:    2,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234},
-			Value:     &fpb.Value_StringValue{&fpb.StringValue{Value: "a"}},
+			Value:     &fpb.Value_StringValue{StringValue: &fpb.StringValue{Value: "a"}},
 		},
 		want: &fpb.Value{
 			Repeat:    1,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234},
-			Value:     &fpb.Value_StringValue{&fpb.StringValue{Value: "a"}},
+			Value:     &fpb.Value_StringValue{StringValue: &fpb.StringValue{Value: "a"}},
 		},
 	}, {
 		desc: "Sync value",
 		in: &fpb.Value{
 			Repeat:    2,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234},
-			Value:     &fpb.Value_Sync{uint64(1)},
+			Value:     &fpb.Value_Sync{Sync: uint64(1)},
 		},
 		want: &fpb.Value{
 			Repeat:    1,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234},
-			Value:     &fpb.Value_Sync{uint64(1)},
+			Value:     &fpb.Value_Sync{Sync: uint64(1)},
 		},
 	}, {
 		desc: "Delete value",
 		in: &fpb.Value{
 			Repeat:    2,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234},
-			Value:     &fpb.Value_Delete{&fpb.DeleteValue{}},
+			Value:     &fpb.Value_Delete{Delete: &fpb.DeleteValue{}},
 		},
 		want: &fpb.Value{
 			Repeat:    1,
 			Timestamp: &fpb.Timestamp{Timestamp: 1234},
-			Value:     &fpb.Value_Delete{&fpb.DeleteValue{}},
+			Value:     &fpb.Value_Delete{Delete: &fpb.DeleteValue{}},
 		},
 	}}
 	for _, tc := range tests {
@@ -792,7 +792,7 @@ func TestQueueFiniteUpdates(t *testing.T) {
 				DeltaMin:  1,
 				DeltaMax:  1,
 			},
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value: 50,
 				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
 					Minimum: 0,
@@ -827,7 +827,7 @@ func TestQueueInfiniteUpdates(t *testing.T) {
 			DeltaMin:  1,
 			DeltaMax:  1,
 		},
-		Value: &fpb.Value_IntValue{&fpb.IntValue{
+		Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 			Value: 50,
 			Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
 				Minimum: 0,
@@ -856,7 +856,7 @@ func TestQueueDelay(t *testing.T) {
 			DeltaMin:  250 * time.Millisecond.Nanoseconds(),
 			DeltaMax:  250 * time.Millisecond.Nanoseconds(),
 		},
-		Value: &fpb.Value_IntValue{&fpb.IntValue{
+		Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 			Value: 50,
 			Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
 				Minimum: 0,
@@ -884,7 +884,7 @@ func TestQueueAddValue(t *testing.T) {
 		Timestamp: &fpb.Timestamp{
 			Timestamp: 2,
 		},
-		Value: &fpb.Value_IntValue{&fpb.IntValue{
+		Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 			Value: 50,
 			Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
 				Minimum: 0,
@@ -895,7 +895,7 @@ func TestQueueAddValue(t *testing.T) {
 		Timestamp: &fpb.Timestamp{
 			Timestamp: 1,
 		},
-		Value: &fpb.Value_IntValue{&fpb.IntValue{
+		Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 			Value: 50,
 			Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
 				Minimum: 0,
@@ -906,7 +906,7 @@ func TestQueueAddValue(t *testing.T) {
 		Timestamp: &fpb.Timestamp{
 			Timestamp: 3,
 		},
-		Value: &fpb.Value_IntValue{&fpb.IntValue{
+		Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 			Value: 50,
 			Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
 				Minimum: 0,
@@ -917,7 +917,7 @@ func TestQueueAddValue(t *testing.T) {
 		Timestamp: &fpb.Timestamp{
 			Timestamp: 3,
 		},
-		Value: &fpb.Value_IntValue{&fpb.IntValue{
+		Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 			Value: 60,
 			Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
 				Minimum: 0,
@@ -928,7 +928,7 @@ func TestQueueAddValue(t *testing.T) {
 		Timestamp: &fpb.Timestamp{
 			Timestamp: 1,
 		},
-		Value: &fpb.Value_IntValue{&fpb.IntValue{
+		Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 			Value: 60,
 			Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
 				Minimum: 0,
@@ -969,31 +969,31 @@ func TestValueOf(t *testing.T) {
 		want interface{}
 	}{{
 		desc: "string value",
-		in:   &fpb.Value{Value: &fpb.Value_StringValue{&fpb.StringValue{Value: "UP"}}},
+		in:   &fpb.Value{Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{Value: "UP"}}},
 		want: "UP",
 	}, {
 		desc: "int value",
-		in:   &fpb.Value{Value: &fpb.Value_IntValue{&fpb.IntValue{Value: 100}}},
+		in:   &fpb.Value{Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{Value: 100}}},
 		want: int64(100),
 	}, {
 		desc: "double value",
-		in:   &fpb.Value{Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{Value: float64(101)}}},
+		in:   &fpb.Value{Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{Value: float64(101)}}},
 		want: float64(101),
 	}, {
 		desc: "Delete value",
-		in:   &fpb.Value{Value: &fpb.Value_Delete{&fpb.DeleteValue{}}},
+		in:   &fpb.Value{Value: &fpb.Value_Delete{Delete: &fpb.DeleteValue{}}},
 		want: &fpb.DeleteValue{},
 	}, {
 		desc: "Sync value",
-		in:   &fpb.Value{Value: &fpb.Value_Sync{uint64(1)}},
+		in:   &fpb.Value{Value: &fpb.Value_Sync{Sync: uint64(1)}},
 		want: uint64(1),
 	}, {
 		desc: "Bool value",
-		in:   &fpb.Value{Value: &fpb.Value_BoolValue{&fpb.BoolValue{Value: true}}},
+		in:   &fpb.Value{Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{Value: true}}},
 		want: true,
 	}, {
 		desc: "Uint value",
-		in:   &fpb.Value{Value: &fpb.Value_UintValue{&fpb.UintValue{Value: 100}}},
+		in:   &fpb.Value{Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{Value: 100}}},
 		want: uint64(100),
 	}}
 	for _, tc := range tests {
@@ -1212,32 +1212,32 @@ func TestTypedValueOf(t *testing.T) {
 		want *gpb.TypedValue
 	}{{
 		desc: "string value",
-		in:   &fpb.Value{Value: &fpb.Value_StringValue{&fpb.StringValue{Value: "UP"}}},
-		want: &gpb.TypedValue{Value: &gpb.TypedValue_StringVal{"UP"}},
+		in:   &fpb.Value{Value: &fpb.Value_StringValue{StringValue: &fpb.StringValue{Value: "UP"}}},
+		want: &gpb.TypedValue{Value: &gpb.TypedValue_StringVal{StringVal: "UP"}},
 	}, {
 		desc: "int value",
-		in:   &fpb.Value{Value: &fpb.Value_IntValue{&fpb.IntValue{Value: 100}}},
-		want: &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{int64(100)}},
+		in:   &fpb.Value{Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{Value: 100}}},
+		want: &gpb.TypedValue{Value: &gpb.TypedValue_IntVal{IntVal: int64(100)}},
 	}, {
 		desc: "double value",
-		in:   &fpb.Value{Value: &fpb.Value_DoubleValue{&fpb.DoubleValue{Value: float64(101)}}},
-		want: &gpb.TypedValue{Value: &gpb.TypedValue_DoubleVal{float64(101)}},
+		in:   &fpb.Value{Value: &fpb.Value_DoubleValue{DoubleValue: &fpb.DoubleValue{Value: float64(101)}}},
+		want: &gpb.TypedValue{Value: &gpb.TypedValue_DoubleVal{DoubleVal: float64(101)}},
 	}, {
 		desc: "delete value",
-		in:   &fpb.Value{Value: &fpb.Value_Delete{&fpb.DeleteValue{}}},
+		in:   &fpb.Value{Value: &fpb.Value_Delete{Delete: &fpb.DeleteValue{}}},
 		want: nil,
 	}, {
 		desc: "sync value",
-		in:   &fpb.Value{Value: &fpb.Value_Sync{uint64(1)}},
+		in:   &fpb.Value{Value: &fpb.Value_Sync{Sync: uint64(1)}},
 		want: nil,
 	}, {
 		desc: "bool value",
-		in:   &fpb.Value{Value: &fpb.Value_BoolValue{&fpb.BoolValue{Value: true}}},
-		want: &gpb.TypedValue{Value: &gpb.TypedValue_BoolVal{true}},
+		in:   &fpb.Value{Value: &fpb.Value_BoolValue{BoolValue: &fpb.BoolValue{Value: true}}},
+		want: &gpb.TypedValue{Value: &gpb.TypedValue_BoolVal{BoolVal: true}},
 	}, {
 		desc: "Uint value",
-		in:   &fpb.Value{Value: &fpb.Value_UintValue{&fpb.UintValue{Value: 100}}},
-		want: &gpb.TypedValue{Value: &gpb.TypedValue_UintVal{uint64(100)}},
+		in:   &fpb.Value{Value: &fpb.Value_UintValue{UintValue: &fpb.UintValue{Value: 100}}},
+		want: &gpb.TypedValue{Value: &gpb.TypedValue_UintVal{UintVal: uint64(100)}},
 	}}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {

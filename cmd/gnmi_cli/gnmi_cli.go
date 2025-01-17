@@ -30,7 +30,6 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/signal"
 	"strings"
@@ -39,14 +38,14 @@ import (
 	"unicode/utf8"
 
 	"flag"
-	
+
 	log "github.com/golang/glog"
-	"golang.org/x/crypto/ssh/terminal"
-	"google.golang.org/protobuf/encoding/prototext"
 	"github.com/openconfig/gnmi/cli"
 	"github.com/openconfig/gnmi/client"
 	"github.com/openconfig/gnmi/client/flags"
 	gclient "github.com/openconfig/gnmi/client/gnmi"
+	"golang.org/x/term"
+	"google.golang.org/protobuf/encoding/prototext"
 
 	gpb "github.com/openconfig/gnmi/proto/gnmi"
 )
@@ -73,7 +72,6 @@ var (
 	setFlag          = flag.Bool("set", false, `When set, CLI will perform a Set request. Usage: gnmi_cli -set -proto <gnmi.SetRequest> -address <address> [other flags ...]`)
 	setReqFlag       = flag.Bool("include_set_req", false, `When set, CLI will pretty print the inputted set request`)
 	withUserPass     = flag.Bool("with_user_pass", false, "When set, CLI will prompt for username/password to use when connecting to a target.")
-	withPerRPCAuth   = flag.Bool("with_per_rpc_auth", false, "Use per RPC auth.")
 
 	// Certificate files.
 	insecureFlag = flag.Bool("insecure", false, "use insecure GRPC connection.")
@@ -152,7 +150,7 @@ func main() {
 
 	if *caCert != "" {
 		certPool := x509.NewCertPool()
-		ca, err := ioutil.ReadFile(*caCert)
+		ca, err := os.ReadFile(*caCert)
 		if err != nil {
 			log.Exitf("could not read %q: %s", *caCert, err)
 		}
@@ -338,7 +336,7 @@ func readCredentials() (*client.Credentials, error) {
 	}
 
 	fmt.Print("password: ")
-	pb, err := terminal.ReadPassword(int(os.Stdin.Fd()))
+	pb, err := term.ReadPassword(int(os.Stdin.Fd()))
 	fmt.Print("\n") // Echo 'Enter' key.
 	if err != nil {
 		return nil, err

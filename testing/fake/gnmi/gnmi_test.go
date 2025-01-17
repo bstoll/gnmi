@@ -17,7 +17,6 @@ limitations under the License.
 package gnmi
 
 import (
-	"golang.org/x/net/context"
 	"crypto/tls"
 	"errors"
 	"fmt"
@@ -26,13 +25,16 @@ import (
 	"sync"
 	"testing"
 
+	"golang.org/x/net/context"
+
 	"github.com/google/go-cmp/cmp"
 	"github.com/kylelemons/godebug/pretty"
+	"github.com/openconfig/gnmi/testing/fake/testing/grpc/config"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/testing/protocmp"
-	"github.com/openconfig/gnmi/testing/fake/testing/grpc/config"
 
 	gnmipb "github.com/openconfig/gnmi/proto/gnmi"
 	fpb "github.com/openconfig/gnmi/testing/fake/proto"
@@ -81,7 +83,6 @@ func (r *receiveEvent) Direction() direction { return r.d }
 
 type fakeStream struct {
 	grpc.ServerStream
-	curr   int
 	events []event
 	recv   []*gnmipb.SubscribeResponse
 	ctx    context.Context
@@ -166,15 +167,14 @@ func TestClientCreate(t *testing.T) {
 		Port:   -1,
 		Values: []*fpb.Value{{
 			Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-			Value: &fpb.Value_IntValue{&fpb.IntValue{
+			Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 				Value: 0,
-				Distribution: &fpb.IntValue_Range{
-					&fpb.IntRange{
-						Minimum:  0,
-						Maximum:  10000000,
-						DeltaMax: 100,
-						DeltaMin: 0,
-					}}}},
+				Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
+					Minimum:  0,
+					Maximum:  10000000,
+					DeltaMax: 100,
+					DeltaMin: 0,
+				}}}},
 		}},
 	}
 	tests := []struct {
@@ -226,15 +226,14 @@ func TestClientCreate(t *testing.T) {
 			Port:   -1,
 			Values: []*fpb.Value{{
 				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-				Value: &fpb.Value_IntValue{&fpb.IntValue{
+				Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 					Value: 0,
-					Distribution: &fpb.IntValue_Range{
-						&fpb.IntRange{
-							Minimum:  0,
-							Maximum:  10000000,
-							DeltaMax: 100,
-							DeltaMin: 0,
-						}}}},
+					Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
+						Minimum:  0,
+						Maximum:  10000000,
+						DeltaMax: 100,
+						DeltaMin: 0,
+					}}}},
 				Repeat: 2,
 			}},
 		},
@@ -259,7 +258,7 @@ func TestClientCreate(t *testing.T) {
 			s := newFakeStream(tt.events)
 			gotErr := c.Run(s)
 			if gotErr != nil {
-				if got, want := grpc.Code(gotErr), tt.err; got != want {
+				if got, want := status.Code(gotErr), tt.err; got != want {
 					t.Errorf("Test:\n%s\nRun() unexpected error %s: got %s, want %s", pp.Sprint(tt), gotErr.Error(), got, want)
 				}
 				return
@@ -282,15 +281,14 @@ func TestClientSend(t *testing.T) {
 			Port:   -1,
 			Values: []*fpb.Value{{
 				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-				Value: &fpb.Value_IntValue{&fpb.IntValue{
+				Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 					Value: 0,
-					Distribution: &fpb.IntValue_Range{
-						&fpb.IntRange{
-							Minimum:  0,
-							Maximum:  10000000,
-							DeltaMax: 100,
-							DeltaMin: 0,
-						}}}},
+					Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
+						Minimum:  0,
+						Maximum:  10000000,
+						DeltaMax: 100,
+						DeltaMin: 0,
+					}}}},
 				Repeat: 2,
 			}},
 		},
@@ -369,15 +367,14 @@ func TestNewAgent(t *testing.T) {
 			Port:   -1,
 			Values: []*fpb.Value{{
 				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-				Value: &fpb.Value_IntValue{&fpb.IntValue{
+				Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 					Value: 0,
-					Distribution: &fpb.IntValue_Range{
-						&fpb.IntRange{
-							Minimum:  0,
-							Maximum:  10000000,
-							DeltaMax: 100,
-							DeltaMin: 0,
-						}}}},
+					Distribution: &fpb.IntValue_Range{Range: &fpb.IntRange{
+						Minimum:  0,
+						Maximum:  10000000,
+						DeltaMax: 100,
+						DeltaMin: 0,
+					}}}},
 			}},
 		},
 		err: nil,
@@ -388,17 +385,17 @@ func TestNewAgent(t *testing.T) {
 			DisableSync: true,
 			Values: []*fpb.Value{{
 				Path: []string{"interfaces", "interface[name=Port-Channel1]", "state", "counters", "in-octets"},
-				Value: &fpb.Value_IntValue{&fpb.IntValue{
+				Value: &fpb.Value_IntValue{IntValue: &fpb.IntValue{
 					Value: 0,
 					Distribution: &fpb.IntValue_Range{
-						&fpb.IntRange{
+						Range: &fpb.IntRange{
 							Minimum:  0,
 							Maximum:  10000000,
 							DeltaMax: 100,
 							DeltaMin: 0,
 						}}}},
 			}, {
-				Value: &fpb.Value_Sync{uint64(1)},
+				Value: &fpb.Value_Sync{Sync: uint64(1)},
 			}},
 		},
 		err: nil,

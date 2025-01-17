@@ -21,6 +21,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -116,7 +117,7 @@ func TestPollCache(t *testing.T) {
 func TestCache(t *testing.T) {
 	fake.Mock(cacheFail, []interface{}{errors.New("client failed")})
 
-	nTest := false
+	var nTest atomic.Bool
 	tests := []struct {
 		desc       string
 		q          client.Query
@@ -169,7 +170,7 @@ func TestCache(t *testing.T) {
 			Queries: []client.Path{{"*"}},
 			NotificationHandler: func(n client.Notification) error {
 				if _, ok := n.(client.Sync); ok {
-					nTest = true
+					nTest.Store(true)
 				}
 				return nil
 			},
@@ -213,8 +214,8 @@ func TestCache(t *testing.T) {
 			if tt.q.NotificationHandler != nil {
 				go func() {
 					<-c.Synced()
-					if !nTest {
-						t.Errorf("Synced() failed: got %v, want true", nTest)
+					if !nTest.Load() {
+						t.Error("Synced() failed: got false, want true")
 					}
 				}()
 			} else {

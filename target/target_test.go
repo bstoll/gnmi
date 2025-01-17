@@ -85,7 +85,7 @@ func TestLoad(t *testing.T) {
 			desc: "add targets",
 			toLoad: &pb.Configuration{
 				Request: map[string]*gpb.SubscribeRequest{
-					"sub1": &gpb.SubscribeRequest{
+					"sub1": {
 						Request: &gpb.SubscribeRequest_Subscribe{},
 					},
 				},
@@ -106,7 +106,7 @@ func TestLoad(t *testing.T) {
 			desc: "modify targets",
 			initial: &pb.Configuration{
 				Request: map[string]*gpb.SubscribeRequest{
-					"sub1": &gpb.SubscribeRequest{},
+					"sub1": {},
 				},
 				Target: map[string]*pb.Target{
 					"dev1": {
@@ -122,7 +122,7 @@ func TestLoad(t *testing.T) {
 			},
 			toLoad: &pb.Configuration{
 				Request: map[string]*gpb.SubscribeRequest{
-					"sub1": &gpb.SubscribeRequest{},
+					"sub1": {},
 				},
 				Target: map[string]*pb.Target{
 					"dev1": {
@@ -143,8 +143,8 @@ func TestLoad(t *testing.T) {
 			desc: "modify subscription",
 			initial: &pb.Configuration{
 				Request: map[string]*gpb.SubscribeRequest{
-					"sub1": &gpb.SubscribeRequest{},
-					"sub3": &gpb.SubscribeRequest{},
+					"sub1": {},
+					"sub3": {},
 				},
 				Target: map[string]*pb.Target{
 					"dev1": {
@@ -164,9 +164,9 @@ func TestLoad(t *testing.T) {
 			},
 			toLoad: &pb.Configuration{
 				Request: map[string]*gpb.SubscribeRequest{
-					"sub1": &gpb.SubscribeRequest{
+					"sub1": {
 						Request: &gpb.SubscribeRequest_Subscribe{
-							&gpb.SubscriptionList{
+							Subscribe: &gpb.SubscriptionList{
 								Subscription: []*gpb.Subscription{
 									{
 										Path: &gpb.Path{
@@ -177,7 +177,7 @@ func TestLoad(t *testing.T) {
 							},
 						},
 					},
-					"sub3": &gpb.SubscribeRequest{},
+					"sub3": {},
 				},
 				Target: map[string]*pb.Target{
 					"dev1": {
@@ -200,9 +200,9 @@ func TestLoad(t *testing.T) {
 			desc: "modify subscription key",
 			initial: &pb.Configuration{
 				Request: map[string]*gpb.SubscribeRequest{
-					"sub1": &gpb.SubscribeRequest{
+					"sub1": {
 						Request: &gpb.SubscribeRequest_Subscribe{
-							&gpb.SubscriptionList{
+							Subscribe: &gpb.SubscriptionList{
 								Subscription: []*gpb.Subscription{
 									{
 										Path: &gpb.Path{
@@ -213,7 +213,7 @@ func TestLoad(t *testing.T) {
 							},
 						},
 					},
-					"sub3": &gpb.SubscribeRequest{},
+					"sub3": {},
 				},
 				Target: map[string]*pb.Target{
 					"dev1": {
@@ -233,9 +233,9 @@ func TestLoad(t *testing.T) {
 			},
 			toLoad: &pb.Configuration{
 				Request: map[string]*gpb.SubscribeRequest{
-					"sub1": &gpb.SubscribeRequest{
+					"sub1": {
 						Request: &gpb.SubscribeRequest_Subscribe{
-							&gpb.SubscriptionList{
+							Subscribe: &gpb.SubscriptionList{
 								Subscription: []*gpb.Subscription{
 									{
 										Path: &gpb.Path{
@@ -246,7 +246,7 @@ func TestLoad(t *testing.T) {
 							},
 						},
 					},
-					"sub3": &gpb.SubscribeRequest{},
+					"sub3": {},
 				},
 				Target: map[string]*pb.Target{
 					"dev1": {
@@ -321,14 +321,14 @@ func TestValidate(t *testing.T) {
 		valid: true,
 		config: &pb.Configuration{
 			Request: map[string]*gpb.SubscribeRequest{
-				"interfaces": &gpb.SubscribeRequest{},
+				"interfaces": {},
 			},
 			Target: map[string]*pb.Target{
-				"target1": &pb.Target{
+				"target1": {
 					Addresses: []string{"192.168.0.10:10162"},
 					Request:   "interfaces",
 				},
-				"target2": &pb.Target{
+				"target2": {
 					Addresses: []string{"192.168.0.11:10162"},
 					Request:   "interfaces",
 				},
@@ -343,7 +343,7 @@ func TestValidate(t *testing.T) {
 		valid: true,
 		config: &pb.Configuration{
 			Request: map[string]*gpb.SubscribeRequest{
-				"interfaces": &gpb.SubscribeRequest{},
+				"interfaces": {},
 			},
 		},
 	}, {
@@ -351,14 +351,14 @@ func TestValidate(t *testing.T) {
 		valid: false,
 		config: &pb.Configuration{
 			Request: map[string]*gpb.SubscribeRequest{
-				"interfaces": &gpb.SubscribeRequest{},
+				"interfaces": {},
 			},
 			Target: map[string]*pb.Target{
-				"": &pb.Target{
+				"": {
 					Addresses: []string{"192.168.0.10:10162"},
 					Request:   "interfaces",
 				},
-				"target2": &pb.Target{
+				"target2": {
 					Addresses: []string{"192.168.0.11:10162"},
 					Request:   "interfaces",
 				},
@@ -369,11 +369,11 @@ func TestValidate(t *testing.T) {
 		valid: false,
 		config: &pb.Configuration{
 			Request: map[string]*gpb.SubscribeRequest{
-				"interfaces": &gpb.SubscribeRequest{},
+				"interfaces": {},
 			},
 			Target: map[string]*pb.Target{
 				"target1": nil,
-				"target2": &pb.Target{
+				"target2": {
 					Addresses: []string{"192.168.0.11:10162"},
 					Request:   "interfaces",
 				},
@@ -384,10 +384,10 @@ func TestValidate(t *testing.T) {
 		valid: false,
 		config: &pb.Configuration{
 			Request: map[string]*gpb.SubscribeRequest{
-				"interfaces": &gpb.SubscribeRequest{},
+				"interfaces": {},
 			},
 			Target: map[string]*pb.Target{
-				"target1": &pb.Target{
+				"target1": {
 					Request: "interfaces",
 				},
 			},
@@ -397,10 +397,10 @@ func TestValidate(t *testing.T) {
 		valid: false,
 		config: &pb.Configuration{
 			Request: map[string]*gpb.SubscribeRequest{
-				"interfaces": &gpb.SubscribeRequest{},
+				"interfaces": {},
 			},
 			Target: map[string]*pb.Target{
-				"target1": &pb.Target{
+				"target1": {
 					Addresses: []string{"192.168.0.10:10162"},
 				},
 			},
@@ -410,10 +410,10 @@ func TestValidate(t *testing.T) {
 		valid: false,
 		config: &pb.Configuration{
 			Request: map[string]*gpb.SubscribeRequest{
-				"interfaces": &gpb.SubscribeRequest{},
+				"interfaces": {},
 			},
 			Target: map[string]*pb.Target{
-				"target1": &pb.Target{
+				"target1": {
 					Addresses: []string{"192.168.0.10:10162"},
 					Request:   "qos",
 				},
@@ -443,7 +443,7 @@ func TestNewConfigWithBase(t *testing.T) {
 			desc: "valid",
 			initial: &pb.Configuration{
 				Request: map[string]*gpb.SubscribeRequest{
-					"sub1": &gpb.SubscribeRequest{
+					"sub1": {
 						Request: &gpb.SubscribeRequest_Subscribe{},
 					},
 				},

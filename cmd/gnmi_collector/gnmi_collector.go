@@ -23,29 +23,28 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"math"
 	"net"
+	"os"
 	"time"
 
-	
 	log "github.com/golang/glog"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc"
-	"github.com/openconfig/grpctunnel/dialer"
-	"github.com/openconfig/grpctunnel/tunnel"
-	"google.golang.org/protobuf/encoding/prototext"
 	"github.com/openconfig/gnmi/cache"
 	coll "github.com/openconfig/gnmi/collector"
 	"github.com/openconfig/gnmi/connection"
 	"github.com/openconfig/gnmi/manager"
 	"github.com/openconfig/gnmi/subscribe"
 	"github.com/openconfig/gnmi/target"
+	"github.com/openconfig/grpctunnel/dialer"
+	"github.com/openconfig/grpctunnel/tunnel"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/protobuf/encoding/prototext"
 
-	tunnelpb "github.com/openconfig/grpctunnel/proto/tunnel"
 	cpb "github.com/openconfig/gnmi/proto/collector"
 	gnmipb "github.com/openconfig/gnmi/proto/gnmi"
 	tpb "github.com/openconfig/gnmi/proto/target"
+	tunnelpb "github.com/openconfig/grpctunnel/proto/tunnel"
 )
 
 var (
@@ -129,21 +128,21 @@ func runCollector(ctx context.Context) error {
 	c := collector{config: &tpb.Configuration{}}
 
 	// Initialize configuration.
-	buf, err := ioutil.ReadFile(*configFile)
+	buf, err := os.ReadFile(*configFile)
 	if err != nil {
-		return fmt.Errorf("Could not read configuration from %q: %v", *configFile, err)
+		return fmt.Errorf("could not read configuration from %q: %v", *configFile, err)
 	}
 	if err := prototext.Unmarshal(buf, c.config); err != nil {
-		return fmt.Errorf("Could not parse configuration from %q: %v", *configFile, err)
+		return fmt.Errorf("could not parse configuration from %q: %v", *configFile, err)
 	}
 	if err := target.Validate(c.config); err != nil {
-		return fmt.Errorf("Configuration in %q is invalid: %v", *configFile, err)
+		return fmt.Errorf("configuration in %q is invalid: %v", *configFile, err)
 	}
 
 	// Initialize TLS credentials.
 	creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
 	if err != nil {
-		return fmt.Errorf("Failed to generate credentials %v", err)
+		return fmt.Errorf("failed to generate credentials %v", err)
 	}
 
 	// Initialize cache.
@@ -233,12 +232,6 @@ func runCollector(ctx context.Context) error {
 	return ctx.Err()
 }
 
-// Struct for managing the dynamic creation of tunnel targets.
-type tunnTarget struct {
-	conf *tpb.Target
-	conn *tunnel.Conn
-}
-
 type collector struct {
 	cache   *cache.Cache
 	config  *tpb.Configuration
@@ -265,7 +258,7 @@ func (c *collector) add(ctx context.Context, id string, t *tpb.Target, tt *tunne
 	}
 
 	if err := c.tm.Add(id, t, request); err != nil {
-		return fmt.Errorf("Could not add target %q: %v", id, err)
+		return fmt.Errorf("could not add target %q: %v", id, err)
 	}
 	return nil
 }

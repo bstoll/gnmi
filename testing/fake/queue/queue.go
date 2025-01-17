@@ -480,21 +480,21 @@ func TypedValueOf(v *fpb.Value) *gpb.TypedValue {
 	tv := &gpb.TypedValue{}
 	switch val := v.GetValue().(type) {
 	case *fpb.Value_IntValue:
-		tv.Value = &gpb.TypedValue_IntVal{val.IntValue.Value}
+		tv.Value = &gpb.TypedValue_IntVal{IntVal: val.IntValue.Value}
 	case *fpb.Value_DoubleValue:
-		tv.Value = &gpb.TypedValue_DoubleVal{val.DoubleValue.Value}
+		tv.Value = &gpb.TypedValue_DoubleVal{DoubleVal: val.DoubleValue.Value}
 	case *fpb.Value_StringValue:
-		tv.Value = &gpb.TypedValue_StringVal{val.StringValue.Value}
+		tv.Value = &gpb.TypedValue_StringVal{StringVal: val.StringValue.Value}
 	case *fpb.Value_StringListValue:
 		leaflist := &gpb.ScalarArray{}
 		for _, s := range val.StringListValue.Value {
-			leaflist.Element = append(leaflist.Element, &gpb.TypedValue{Value: &gpb.TypedValue_StringVal{s}})
+			leaflist.Element = append(leaflist.Element, &gpb.TypedValue{Value: &gpb.TypedValue_StringVal{StringVal: s}})
 		}
-		tv.Value = &gpb.TypedValue_LeaflistVal{leaflist}
+		tv.Value = &gpb.TypedValue_LeaflistVal{LeaflistVal: leaflist}
 	case *fpb.Value_BoolValue:
-		tv.Value = &gpb.TypedValue_BoolVal{val.BoolValue.Value}
+		tv.Value = &gpb.TypedValue_BoolVal{BoolVal: val.BoolValue.Value}
 	case *fpb.Value_UintValue:
-		tv.Value = &gpb.TypedValue_UintVal{val.UintValue.Value}
+		tv.Value = &gpb.TypedValue_UintVal{UintVal: val.UintValue.Value}
 	default:
 		return nil
 	}

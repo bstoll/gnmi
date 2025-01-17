@@ -77,9 +77,9 @@ func TestToStrings(t *testing.T) {
 		{
 			p: &gpb.Path{
 				Elem: []*gpb.PathElem{
-					&gpb.PathElem{Name: "a"},
-					&gpb.PathElem{Name: "b", Key: map[string]string{"n": "c"}},
-					&gpb.PathElem{Name: "d"},
+					{Name: "a"},
+					{Name: "b", Key: map[string]string{"n": "c"}},
+					{Name: "d"},
 				},
 				Target: "t",
 			},
@@ -90,9 +90,9 @@ func TestToStrings(t *testing.T) {
 		{
 			p: &gpb.Path{
 				Elem: []*gpb.PathElem{
-					&gpb.PathElem{Name: "a"},
-					&gpb.PathElem{Name: "b", Key: map[string]string{"n": "c"}},
-					&gpb.PathElem{Name: "d"},
+					{Name: "a"},
+					{Name: "b", Key: map[string]string{"n": "c"}},
+					{Name: "d"},
 				},
 			},
 			e:   []string{"a", "b", "c", "d"},
@@ -102,9 +102,9 @@ func TestToStrings(t *testing.T) {
 		{
 			p: &gpb.Path{
 				Elem: []*gpb.PathElem{
-					&gpb.PathElem{Name: "a"},
-					&gpb.PathElem{Name: "b", Key: map[string]string{"n": "c"}},
-					&gpb.PathElem{Name: "d"},
+					{Name: "a"},
+					{Name: "b", Key: map[string]string{"n": "c"}},
+					{Name: "d"},
 				},
 				Target: "t",
 				Origin: "o",
@@ -116,9 +116,9 @@ func TestToStrings(t *testing.T) {
 		{
 			p: &gpb.Path{
 				Elem: []*gpb.PathElem{
-					&gpb.PathElem{Name: "a"},
-					&gpb.PathElem{Name: "b", Key: map[string]string{"b": "2", "a": "1", "c": "3"}},
-					&gpb.PathElem{Name: "c"},
+					{Name: "a"},
+					{Name: "b", Key: map[string]string{"b": "2", "a": "1", "c": "3"}},
+					{Name: "c"},
 				},
 			},
 			e: []string{"a", "b", "1", "2", "3", "c"},
@@ -127,9 +127,9 @@ func TestToStrings(t *testing.T) {
 		{
 			p: &gpb.Path{
 				Elem: []*gpb.PathElem{
-					&gpb.PathElem{Name: "a", Key: map[string]string{"l": "2", "k": "1"}},
-					&gpb.PathElem{Name: "b", Key: map[string]string{"b": "2", "a": "1", "c": "3"}},
-					&gpb.PathElem{Name: "c"},
+					{Name: "a", Key: map[string]string{"l": "2", "k": "1"}},
+					{Name: "b", Key: map[string]string{"b": "2", "a": "1", "c": "3"}},
+					{Name: "c"},
 				},
 			},
 			e: []string{"a", "1", "2", "b", "1", "2", "3", "c"},
@@ -187,9 +187,9 @@ func TestCompletePath(t *testing.T) {
 			inPrefix: &gpb.Path{Target: "t", Origin: "o"},
 			inPath: &gpb.Path{
 				Elem: []*gpb.PathElem{
-					&gpb.PathElem{Name: "a"},
-					&gpb.PathElem{Name: "b", Key: map[string]string{"n": "c"}},
-					&gpb.PathElem{Name: "d"},
+					{Name: "a"},
+					{Name: "b", Key: map[string]string{"n": "c"}},
+					{Name: "d"},
 				},
 			},
 			wantSlice: []string{"o", "a", "b", "c", "d"},

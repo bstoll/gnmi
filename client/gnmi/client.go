@@ -31,13 +31,13 @@ import (
 	"time"
 
 	log "github.com/golang/glog"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
-	"github.com/openconfig/ygot/ygot"
 	"github.com/openconfig/gnmi/client"
 	"github.com/openconfig/gnmi/path"
 	"github.com/openconfig/gnmi/value"
+	"github.com/openconfig/ygot/ygot"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/protobuf/proto"
 
 	gpb "github.com/openconfig/gnmi/proto/gnmi"
 )
@@ -308,7 +308,7 @@ func noti(prefix []string, pp *gpb.Path, ts time.Time, u *gpb.Update) (client.No
 		}
 		return client.Update{Path: p, TS: ts, Val: val, Dups: u.Duplicates}, nil
 	default:
-		return nil, fmt.Errorf("Unsupported value type: %v", v.Type)
+		return nil, fmt.Errorf("unsupported value type: %v", v.Type)
 	}
 }
 

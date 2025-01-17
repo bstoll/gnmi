@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	"google.golang.org/protobuf/proto"
 	"github.com/openconfig/gnmi/client"
 	fclient "github.com/openconfig/gnmi/client/fake"
+	"google.golang.org/protobuf/proto"
 )
 
 const (
@@ -486,7 +486,7 @@ func (f fakeStreamingClient) Close() error { return nil }
 
 // Once client will run the query and once complete you can act on the
 // returned tree.
-func ExampleClient_Once() {
+func ExampleClient_Subscribe_once() {
 	q := client.Query{
 		Addrs:   []string{"127.0.0.1:1234"},
 		Target:  "dev",
@@ -536,7 +536,7 @@ func ExampleClient_Poll() {
 
 // Stream client returns the current state for the query and keeps running
 // until closed or the underlying connection breaks.
-func ExampleClient_Stream() {
+func ExampleClient_Subscribe_stream() {
 	q := client.Query{
 		Addrs:   []string{"127.0.0.1:1234"},
 		Target:  "dev",

@@ -26,11 +26,11 @@ import (
 	"strings"
 	"time"
 
-	"google.golang.org/protobuf/encoding/prototext"
-	"google.golang.org/protobuf/proto"
 	"github.com/openconfig/gnmi/client"
 	"github.com/openconfig/gnmi/ctree"
 	"github.com/protocolbuffers/txtpbfmt/parser"
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
 
 	gpb "github.com/openconfig/gnmi/proto/gnmi"
 )
@@ -122,7 +122,7 @@ func fixStability(m prototext.MarshalOptions, r proto.Message) []byte {
 // results are formatted as a human readable string and passed to
 // Config.Display().
 func sendQueryAndDisplay(ctx context.Context, query client.Query, cfg *Config) error {
-	cancel := func() {}
+	var cancel func()
 	if cfg.StreamingDuration > 0 {
 		ctx, cancel = context.WithTimeout(ctx, cfg.StreamingDuration)
 		defer cancel()
@@ -263,7 +263,7 @@ func displayOnceResults(ctx context.Context, query client.Query, cfg *Config) er
 		return fmt.Errorf("client had error while displaying results:\n\t%v", err)
 	}
 	displayPeer(c, cfg)
-	displayWalk(query.Target, c, cfg)
+	displayWalk(c, cfg)
 	return nil
 }
 
@@ -298,7 +298,7 @@ func displayPollingResults(ctx context.Context, query client.Query, cfg *Config)
 			displayPeer(c, cfg)
 			header = true
 		}
-		displayWalk(query.Target, c, cfg)
+		displayWalk(c, cfg)
 		if !cfg.countExhausted {
 			time.Sleep(cfg.PollingInterval)
 		}
@@ -331,7 +331,7 @@ func displayStreamingResults(ctx context.Context, query client.Query, cfg *Confi
 		case client.Delete:
 			display(v.Path, v.TS, v.Val)
 		case client.Sync:
-			displayWalk(query.Target, c, cfg)
+			displayWalk(c, cfg)
 			complete = true
 		case client.Error:
 			cfg.Display([]byte(fmt.Sprintf("Error: %v", v)))
@@ -344,7 +344,7 @@ func displayStreamingResults(ctx context.Context, query client.Query, cfg *Confi
 	return c.Subscribe(ctx, query, cfg.ClientTypes...)
 }
 
-func displayWalk(target string, c *client.CacheClient, cfg *Config) {
+func displayWalk(c *client.CacheClient, cfg *Config) {
 	b := make(pathmap)
 	c.WalkSorted(func(path []string, _ *ctree.Leaf, value interface{}) error {
 		switch v := value.(type) {

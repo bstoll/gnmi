@@ -106,7 +106,7 @@ func (c *CacheClient) Leaves() Leaves {
 	c.WalkSorted(func(path []string, _ *ctree.Leaf, value interface{}) error {
 		tv, ok := value.(TreeVal)
 		if !ok {
-			return fmt.Errorf("Invalid value in tree: %s=%#v", path, value)
+			return fmt.Errorf("invalid value in tree: %s=%#v", path, value)
 		}
 		pvs = append(pvs, Leaf{Path: path, Val: tv.Val, TS: tv.TS})
 		return nil

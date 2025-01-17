@@ -20,12 +20,11 @@ limitations under the License.
 package main
 
 import (
-	"io/ioutil"
 	"os"
 
 	log "github.com/golang/glog"
-	"google.golang.org/protobuf/encoding/prototext"
 	"github.com/protocolbuffers/txtpbfmt/parser"
+	"google.golang.org/protobuf/encoding/prototext"
 
 	fpb "github.com/openconfig/gnmi/testing/fake/proto"
 )
@@ -41,12 +40,12 @@ var (
 			{
 				Path:   []string{"a", "b"},
 				Repeat: 3,
-				Value:  &fpb.Value_IntValue{&fpb.IntValue{Value: 4}},
+				Value:  &fpb.Value_IntValue{IntValue: &fpb.IntValue{Value: 4}},
 			},
 			{
 				Path:   []string{"b", "c"},
 				Repeat: 5,
-				Value:  &fpb.Value_StringValue{&fpb.StringValue{Value: "foo"}},
+				Value:  &fpb.Value_StringValue{StringValue: &fpb.StringValue{Value: "foo"}},
 			},
 		},
 		DisableSync: false,
@@ -66,7 +65,7 @@ func main() {
 	if err != nil {
 		log.Exitf("failed to format %s: %v", config, err)
 	}
-	if err := ioutil.WriteFile(outputPath, b, os.ModePerm); err != nil {
+	if err := os.WriteFile(outputPath, b, os.ModePerm); err != nil {
 		log.Exit(err)
 	}
 }

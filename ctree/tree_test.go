@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -108,12 +109,12 @@ func TestTreeGetLeafValue(t *testing.T) {
 }
 
 var testPaths = [][]string{
-	[]string{"a", "b", "c"},
-	[]string{"a", "d"},
-	[]string{"b", "a", "d"},
-	[]string{"b", "c", "d"},
-	[]string{"c", "d", "e", "f", "g", "h", "i"},
-	[]string{"d"},
+	{"a", "b", "c"},
+	{"a", "d"},
+	{"b", "a", "d"},
+	{"b", "c", "d"},
+	{"c", "d", "e", "f", "g", "h", "i"},
+	{"d"},
 }
 
 func buildTree(t *Tree) {
@@ -399,7 +400,7 @@ func TestDeleteConditional(t *testing.T) {
 	valEqualsD := func(v interface{}) bool { return v == "d" }
 	buildTree(tr)
 	leaves = tr.DeleteConditional([]string{}, valEqualsD)
-	if expected := [][]string{[]string{"d"}}; !reflect.DeepEqual(expected, leaves) {
+	if expected := [][]string{{"d"}}; !reflect.DeepEqual(expected, leaves) {
 		t.Errorf("got %v, expected %v", leaves, expected)
 	}
 	if v := tr.GetLeafValue([]string{"d"}); nil != v {
@@ -587,7 +588,7 @@ func TestParallelQueryGet(t *testing.T) {
 func makePath(i int64) []string {
 	path := []string{}
 	for depth := 0; depth < 5; depth++ {
-		path = append(path, fmt.Sprintf("%d", i&15))
+		path = append(path, strconv.FormatInt(i&15, 10))
 		i >>= 4
 	}
 	return path
@@ -737,9 +738,9 @@ func TestIsBranch(t *testing.T) {
 func TestGet(t *testing.T) {
 	tr := &Tree{}
 	testPaths = [][]string{
-		[]string{"a", "b", "c"},
-		[]string{"a", "d"},
-		[]string{"d"},
+		{"a", "b", "c"},
+		{"a", "d"},
+		{"d"},
 	}
 	buildTreePaths(tr, testPaths)
 	for _, test := range []struct {
@@ -778,9 +779,9 @@ func TestGet(t *testing.T) {
 func TestGetChildren(t *testing.T) {
 	tr := &Tree{}
 	testPaths = [][]string{
-		[]string{"a", "b", "c"},
-		[]string{"a", "d"},
-		[]string{"d"},
+		{"a", "b", "c"},
+		{"a", "d"},
+		{"d"},
 	}
 	buildTreePaths(tr, testPaths)
 	for _, test := range []struct {
@@ -857,9 +858,9 @@ func TestLeafValue(t *testing.T) {
 func TestString(t *testing.T) {
 	tr := &Tree{}
 	testPaths = [][]string{
-		[]string{"a", "b", "c"},
-		[]string{"a", "d"},
-		[]string{"d"},
+		{"a", "b", "c"},
+		{"a", "d"},
+		{"d"},
 	}
 	buildTreePaths(tr, testPaths)
 	for _, test := range []struct {
@@ -886,7 +887,7 @@ func TestString(t *testing.T) {
 			t.Errorf("String\n\tgot:  %q\n\twant: %q", got, test.want)
 		}
 		// Test via string format specifier.
-		got = fmt.Sprintf("%s", test.node)
+		got = test.node.String()
 		if got != test.want {
 			t.Errorf("string format specifier\n\tgot:  %q\n\twant: %q", got, test.want)
 		}

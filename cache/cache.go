@@ -26,16 +26,16 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/golang/glog"
-	"google.golang.org/protobuf/encoding/prototext"
-	"google.golang.org/protobuf/proto"
 	"bitbucket.org/creachadair/stringset"
+	log "github.com/golang/glog"
 	"github.com/openconfig/gnmi/ctree"
 	"github.com/openconfig/gnmi/errlist"
 	"github.com/openconfig/gnmi/latency"
 	"github.com/openconfig/gnmi/metadata"
 	"github.com/openconfig/gnmi/path"
 	"github.com/openconfig/gnmi/value"
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
 
 	pb "github.com/openconfig/gnmi/proto/gnmi"
 )
@@ -777,7 +777,7 @@ func deleteNoti(t, o string, p []string) *pb.Notification {
 	return &pb.Notification{
 		Timestamp: Now().UnixNano(),
 		Prefix:    &pb.Path{Target: t, Origin: o},
-		Delete:    []*pb.Path{&pb.Path{Elem: pe}},
+		Delete:    []*pb.Path{{Elem: pe}},
 	}
 }
 
@@ -791,7 +791,7 @@ func metaNoti(t, m string, v *pb.TypedValue) *pb.Notification {
 		Timestamp: Now().UnixNano(),
 		Prefix:    &pb.Path{Target: t},
 		Update: []*pb.Update{
-			&pb.Update{
+			{
 				Path: &pb.Path{Elem: pe},
 				Val:  v,
 			},
@@ -800,13 +800,13 @@ func metaNoti(t, m string, v *pb.TypedValue) *pb.Notification {
 }
 
 func metaNotiBool(t, m string, v bool) *pb.Notification {
-	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_BoolVal{v}})
+	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_BoolVal{BoolVal: v}})
 }
 
 func metaNotiInt(t, m string, v int64) *pb.Notification {
-	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_IntVal{v}})
+	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_IntVal{IntVal: v}})
 }
 
 func metaNotiStr(t, m string, v string) *pb.Notification {
-	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_StringVal{v}})
+	return metaNoti(t, m, &pb.TypedValue{Value: &pb.TypedValue_StringVal{StringVal: v}})
 }
